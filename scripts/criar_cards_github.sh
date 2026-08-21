@@ -22,7 +22,9 @@ gh label create "entrega"         -R "$REPO" -c "#000000" -f
 criar_card () {
   local titulo="$1" corpo="$2" label="$3"
   url=$(gh issue create -R "$REPO" --title "$titulo" --body "$corpo" --label "$label")
-  gh project item-add "$PROJECT_NUMBER" --owner "$OWNER" --url "$url"
+  # O Project tem "Auto-add to project" ativado: issues novas do repo ja
+  # caem no board sozinhas. Se o item ja estiver la, ignora o erro.
+  gh project item-add "$PROJECT_NUMBER" --owner "$OWNER" --url "$url" || true
   echo "Criado: $titulo -> $url"
 }
 

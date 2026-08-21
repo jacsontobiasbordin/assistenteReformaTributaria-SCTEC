@@ -1,0 +1,1 @@
+# Preenchido na Etapa 2 (configuração multi-LLM e requirements)

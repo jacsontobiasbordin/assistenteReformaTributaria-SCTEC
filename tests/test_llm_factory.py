@@ -1,4 +1,5 @@
 import pytest
+from pydantic import ValidationError
 
 from app.config import get_settings
 from app.llm.factory import get_llm
@@ -48,5 +49,5 @@ def test_get_llm_com_provedor_invalido_levanta_erro(monkeypatch):
     monkeypatch.setenv("LLM_PROVIDER", "provedor-inexistente")
     monkeypatch.setenv("GOOGLE_API_KEY", "chave-de-teste-google")
 
-    with pytest.raises(Exception):
+    with pytest.raises(ValidationError):
         get_llm()

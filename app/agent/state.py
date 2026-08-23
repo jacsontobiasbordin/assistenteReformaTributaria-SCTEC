@@ -27,6 +27,14 @@ class AgentState(TypedDict):
             enquanto o grafo não chegou a um nó de resposta.
         alertas: lista de mensagens de validação, erro ou aviso
             acumuladas ao longo da execução do grafo.
+        risco_detectado: preenchido por `triagem_seguranca`; indica se a
+            pergunta do usuário contém algum padrão suspeito de tentativa
+            de manipular as instruções do sistema. Valor padrão `False`
+            quando não informado na chamada de `.invoke()`.
+        tentativas_geracao: contador de chamadas ao LLM feitas por
+            `gerar_analise` para a pergunta atual, usado para limitar o
+            retry a `MAX_TENTATIVAS_GERACAO`. Valor padrão `0` quando não
+            informado na chamada de `.invoke()`.
     """
 
     pergunta_usuario: str
@@ -34,3 +42,5 @@ class AgentState(TypedDict):
     dados_base_local: dict | None
     resposta_estruturada: dict | None
     alertas: list[str]
+    risco_detectado: bool
+    tentativas_geracao: int

@@ -73,6 +73,25 @@ flowchart TD
     G -->|nao aprovado/pendente| END6[FIM: resposta com alerta pendente]
 ```
 
+A partir da Etapa 4, o núcleo determinístico deste diagrama já está
+implementado em código: o estado compartilhado tipado está em
+[app/agent/state.py](app/agent/state.py) (`AgentState`), os nodes
+`validar_entrada`, `identificar_cenario`, `consultar_base_local`,
+`responder_entrada_invalida` e `responder_fora_de_escopo` estão em
+[app/agent/nodes.py](app/agent/nodes.py), e a montagem do grafo (nodes,
+entry point e arestas condicionais) está em
+[app/agent/graph.py](app/agent/graph.py) (`build_graph()`). Por ora, o
+grafo termina em `consultar_base_local`; os demais nodes do diagrama
+(`triagem_seguranca`, `gerar_analise`, `validar_resposta`,
+`solicitar_aprovacao_humana`, `disparar_notificacao_low_code`) entram
+nas próximas etapas.
+
+Todos os nodes implementados até aqui são **100% determinísticos**
+(regras da aplicação, sem LLM). O único node agêntico de todo o projeto
+é `gerar_analise` (introduzido na Etapa 5), que usa o LLM apenas para
+sintetizar a resposta final a partir do contexto já recuperado — nunca
+para decidir roteamento, autonomia ou execução de ferramentas.
+
 ## Instalação e execução
 
 1. Crie e ative um ambiente virtual:

@@ -224,6 +224,22 @@ def validar_resposta(state: AgentState) -> dict:
     return {}
 
 
+def solicitar_aprovacao_humana(state: AgentState) -> dict:
+    # Portao de aprovacao: roda apenas quando cenario_identificado ==
+    # "calculo_impostos" (regra deterministica da aplicacao — calculo de
+    # impostos e o cenario de maior risco financeiro/de compliance no
+    # dominio). Nao dispara nenhuma notificacao — isso so existe a partir
+    # da Etapa 12. Aqui apenas sinaliza que a acao esta pendente de
+    # aprovacao humana antes de qualquer notificacao externa.
+    resposta = dict(state.get("resposta_estruturada") or {})
+    resposta["aviso_aprovacao"] = (
+        "Esta analise envolve calculo de impostos e requer aprovacao "
+        "humana antes de qualquer notificacao externa ser disparada. "
+        "Nenhuma acao foi executada automaticamente."
+    )
+    return {"aguardando_aprovacao_humana": True, "resposta_estruturada": resposta}
+
+
 def registrar_historico(state: AgentState) -> dict:
     # So roda no caminho de sucesso (resposta valida): perguntas invalidas
     # ou fora de escopo nao agregam contexto util para perguntas futuras

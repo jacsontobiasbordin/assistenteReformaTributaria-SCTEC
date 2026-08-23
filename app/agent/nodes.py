@@ -27,13 +27,31 @@ from app.tools.schemas import ConsultaCenarioInput
 
 MAX_TENTATIVAS_GERACAO = 2
 
+# Deteccao 100% deterministica (sem LLM), refinada na Etapa 7 a partir da
+# versao simples da Etapa 5 (ver docs/qa/refinamento-seguranca.md). Esta
+# lista pode continuar crescendo conforme novos padroes de tentativa de
+# manipulacao forem observados (ciclo de refinamento continuo).
 _PADROES_SUSPEITOS = [
+    # tentativas de sobrescrever as instrucoes do sistema
     "ignore as instrucoes",
     "esqueca as regras",
+    "desconsidere o que foi dito",
+    "voce agora e",
+    "novo system prompt",
+    "a partir de agora voce",
+    # tentativas de exfiltracao de informacao sensivel
     "revele",
+    "mostre sua configuracao",
+    "qual e sua api key",
     "system prompt",
     "api key",
-    "mostre sua configuracao",
+    "chave de api",
+    "token de acesso",
+    "suas instrucoes internas",
+    # marcadores comuns de injecao via delimitadores falsos
+    '"""system"""',
+    "[inst]",
+    "<system>",
 ]
 
 _PALAVRAS_CHAVE_POR_CENARIO = {
@@ -90,9 +108,9 @@ def identificar_cenario(state: AgentState) -> dict:
 
 
 def triagem_seguranca(state: AgentState) -> dict:
-    # Deteccao inicial simples (Etapa 5). Sera substituida por uma versao
-    # mais robusta na Etapa 7, junto com o cenario adversarial completo e
-    # o bloqueio de acao sensivel.
+    # Deteccao 100% deterministica (sem LLM). Versao refinada na Etapa 7
+    # a partir da deteccao simples da Etapa 5 — ver
+    # docs/qa/refinamento-seguranca.md para o ciclo de refinamento.
     pergunta = state["pergunta_usuario"].lower()
     risco_detectado = any(padrao in pergunta for padrao in _PADROES_SUSPEITOS)
     return {"risco_detectado": risco_detectado}
@@ -111,6 +129,35 @@ def consultar_base_local(state: AgentState) -> dict:
             "este cenario no momento."
         )
         return {"dados_base_local": None, "alertas": alertas}
+
+
+def avaliar_seguranca(state: AgentState) -> dict:
+    # Node de juncao (fan-in) entre consultar_base_local e
+    # triagem_seguranca. Nao altera o estado — existe apenas para a
+    # decisao de roteamento (bloquear vs. seguir para gerar_analise)
+    # feita no grafo.
+    return {}
+
+
+def bloquear_acao_insegura(state: AgentState) -> dict:
+    # Bloqueio 100% deterministico, executado ANTES de qualquer chamada
+    # ao LLM. Nunca chama get_llm() — garante, por regra da aplicacao (e
+    # nao por "boa vontade" do modelo), que nenhuma instrucao maliciosa
+    # seja seguida e que nenhuma informacao sensivel (system prompt, API
+    # key) possa ser revelada por este caminho.
+    alertas = list(state.get("alertas", []))
+    alertas.append("Tentativa de instrucao nao autorizada detectada e bloqueada.")
+
+    return {
+        "resposta_estruturada": {
+            "cenario_analisado": "Solicitacao nao processada por motivo de seguranca.",
+            "pontos_reforma_relacionados": [],
+            "impactos_tecnicos_erp": [],
+            "pontos_atencao": ["A pergunta continha uma instrucao que nao sera seguida."],
+            "checklist_tecnico": [],
+        },
+        "alertas": alertas,
+    }
 
 
 def gerar_analise(state: AgentState) -> dict:
@@ -175,6 +222,22 @@ def validar_resposta(state: AgentState) -> dict:
     # Node "passivo": nao altera o estado. Existe apenas para a decisao de
     # roteamento (retry vs. sucesso vs. falha definitiva) feita no grafo.
     return {}
+
+
+def solicitar_aprovacao_humana(state: AgentState) -> dict:
+    # Portao de aprovacao: roda apenas quando cenario_identificado ==
+    # "calculo_impostos" (regra deterministica da aplicacao — calculo de
+    # impostos e o cenario de maior risco financeiro/de compliance no
+    # dominio). Nao dispara nenhuma notificacao — isso so existe a partir
+    # da Etapa 12. Aqui apenas sinaliza que a acao esta pendente de
+    # aprovacao humana antes de qualquer notificacao externa.
+    resposta = dict(state.get("resposta_estruturada") or {})
+    resposta["aviso_aprovacao"] = (
+        "Esta analise envolve calculo de impostos e requer aprovacao "
+        "humana antes de qualquer notificacao externa ser disparada. "
+        "Nenhuma acao foi executada automaticamente."
+    )
+    return {"aguardando_aprovacao_humana": True, "resposta_estruturada": resposta}
 
 
 def registrar_historico(state: AgentState) -> dict:

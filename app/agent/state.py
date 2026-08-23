@@ -36,6 +36,12 @@ class AgentState(TypedDict):
             `gerar_analise` para a pergunta atual, usado para limitar o
             retry a `MAX_TENTATIVAS_GERACAO`. Valor padrão `0` quando não
             informado na chamada de `.invoke()`.
+        aguardando_aprovacao_humana: preenchido por
+            `solicitar_aprovacao_humana`; indica que a análise envolve
+            uma ação de maior risco no domínio (cálculo de impostos) e
+            requer aprovação humana antes de qualquer notificação
+            externa poder ser disparada. Valor padrão `False` quando não
+            informado na chamada de `.invoke()`.
         historico: memória de curto prazo da sessão (mesmo `thread_id`,
             via checkpointer `MemorySaver`). Cada entrada resume uma
             pergunta respondida com sucesso. Diferente de todos os
@@ -55,4 +61,5 @@ class AgentState(TypedDict):
     alertas: list[str]
     risco_detectado: bool
     tentativas_geracao: int
+    aguardando_aprovacao_humana: bool
     historico: Annotated[list[dict], add]

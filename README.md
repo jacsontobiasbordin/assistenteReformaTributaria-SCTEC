@@ -141,6 +141,56 @@ não anos.
   sessão de consulta); armazenamento persistente entre reinicializações
   fica como evolução futura, fora do escopo desta etapa.
 
+## Segurança e autonomia
+
+A solução trata segurança e limites de autonomia em duas frentes
+distintas e complementares, atendendo ao requisito 4.5.
+
+**A) Bloqueio determinístico de entrada adversarial (prompt injection).**
+`triagem_seguranca` (`app/agent/nodes.py`) verifica, por padrões de texto
+case-insensitive e 100% determinísticos (sem LLM), tentativas de
+sobrescrever as instruções do sistema (ex.: "ignore as instrucoes",
+"voce agora e"), tentativas de exfiltração de informação sensível (ex.:
+"revele", "api key", "system prompt") e marcadores comuns de injeção via
+delimitadores falsos (ex.: `[INST]`, `<system>`). Quando um padrão bate,
+o node de junção `avaliar_seguranca` roteia diretamente para
+`bloquear_acao_insegura` — **antes de qualquer chamada ao LLM**. Esse
+node nunca chama `get_llm()`: a resposta de segurança é fixa e montada
+inteiramente por código, garantindo por regra da aplicação — não por
+"boa vontade" do modelo — que nenhuma instrução maliciosa seja seguida e
+que nenhuma informação sensível (chave de API, system prompt) possa ser
+revelada por esse caminho. Essa defesa em profundidade é comprovada por
+teste: `tests/test_seguranca.py::test_cenario_adversarial_bloqueia_sem_chamar_llm`
+verifica explicitamente que o mock de `get_llm()` **nunca é chamado**
+nesse cenário.
+
+**B) Portão de aprovação humana para ação sensível.** Análises sobre
+**cálculo de impostos** — o cenário de maior risco financeiro/de
+compliance no domínio — sempre passam pelo node
+`solicitar_aprovacao_humana` antes do fim do grafo. Esse node marca
+`aguardando_aprovacao_humana = True` e adiciona um aviso explícito à
+resposta; ele **não dispara nenhuma notificação externa** — o disparo
+real (webhook/automação low-code) só é implementado na Etapa 12. Nesta
+etapa existe apenas o "portão": a decisão de agir de fato continua
+dependendo de um humano.
+
+**Limites de autonomia definidos:**
+- Uma ação **executa** automaticamente apenas quando é 100%
+  determinística e reversível (ex.: consultar a base local, gerar a
+  análise via LLM dentro do contexto validado);
+- Uma ação é **bloqueada** quando a entrada é classificada como
+  adversarial — o grafo nunca chega a chamar o LLM nesse caso;
+- Uma ação de maior risco (cálculo de impostos) fica **pendente de
+  aprovação humana** antes que qualquer efeito externo possa ocorrer.
+
+**Credenciais:** protegidas via variável de ambiente (`.env`), nunca
+hardcoded no código — ver [Instalação e execução](#instalação-e-execução)
+e a Etapa 2 (`app/config.py`).
+
+O refinamento da triagem de segurança (da versão simples da Etapa 5 para
+a versão atual) está documentado como ciclo de refinamento em
+[docs/qa/refinamento-seguranca.md](docs/qa/refinamento-seguranca.md).
+
 ## Instalação e execução
 
 1. Crie e ative um ambiente virtual:

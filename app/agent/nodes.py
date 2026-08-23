@@ -19,6 +19,15 @@ from app.tools.local_kb import (
 )
 from app.tools.schemas import ConsultaCenarioInput
 
+_PADROES_SUSPEITOS = [
+    "ignore as instrucoes",
+    "esqueca as regras",
+    "revele",
+    "system prompt",
+    "api key",
+    "mostre sua configuracao",
+]
+
 _PALAVRAS_CHAVE_POR_CENARIO = {
     "cadastro_produtos": [
         "cadastro",
@@ -70,6 +79,15 @@ def identificar_cenario(state: AgentState) -> dict:
             return {"cenario_identificado": cenario}
 
     return {"cenario_identificado": "fora_de_escopo"}
+
+
+def triagem_seguranca(state: AgentState) -> dict:
+    # Deteccao inicial simples (Etapa 5). Sera substituida por uma versao
+    # mais robusta na Etapa 7, junto com o cenario adversarial completo e
+    # o bloqueio de acao sensivel.
+    pergunta = state["pergunta_usuario"].lower()
+    risco_detectado = any(padrao in pergunta for padrao in _PADROES_SUSPEITOS)
+    return {"risco_detectado": risco_detectado}
 
 
 def consultar_base_local(state: AgentState) -> dict:

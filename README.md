@@ -128,3 +128,47 @@ custo-benefício. Para trocar de provedor, altere `LLM_PROVIDER` no `.env`
 e preencha a API key correspondente — nenhum código precisa ser alterado,
 pois toda a lógica de seleção do client fica centralizada em
 `app/llm/factory.py`.
+
+## Tool e integração
+
+A primeira ferramenta (tool) do agente é a **consulta à base local de
+conhecimento** (`app/tools/local_kb.py`), que lê
+[data/reforma_tributaria_erp.json](data/reforma_tributaria_erp.json) e
+retorna a análise correspondente a um dos três cenários suportados
+(cadastro de produtos, emissão de nota fiscal, cálculo de IBS/CBS).
+
+Ela conta como integração por **serviço/backend interno** — não é uma API
+externa nem um servidor MCP nesta etapa: é uma função Python com contrato
+de entrada e saída explícito, validado por schema, que futuramente será
+chamada por um nó do grafo do LangGraph.
+
+**Schema de entrada** — `ConsultaCenarioInput` (`app/tools/schemas.py`):
+um único campo `cenario: str`, validado por um `field_validator` do
+pydantic que só aceita `cadastro_produtos`, `emissao_nota_fiscal` ou
+`calculo_impostos`. Qualquer outro valor é rejeitado antes de a tool
+sequer ser executada, com uma mensagem de erro listando os valores
+aceitos.
+
+**Schema de saída** — `RespostaCenarioLocal` (`app/tools/schemas.py`):
+espelha a estrutura de cada cenário no JSON, com os campos `resumo`,
+`pontos_reforma_relacionados`, `impactos_tecnicos_erp`,
+`pontos_atencao` e `checklist_tecnico`.
+
+**Validação e tratamento de falhas:**
+- a validação de parâmetro acontece na própria construção de
+  `ConsultaCenarioInput` — um `cenario` inválido nunca chega à lógica de
+  negócio da tool;
+- `CenarioNaoEncontradoError` é lançada como defesa extra, caso o cenário
+  esteja ausente da base local carregada (mesmo já validado pelo schema);
+- `BaseLocalIndisponivelError` é lançada quando o arquivo JSON não existe
+  ou está corrompido (`FileNotFoundError`/`json.JSONDecodeError`
+  capturadas e relançadas com `raise ... from e`), evitando que um
+  traceback bruto vaze para quem consome a tool;
+- o caminho do arquivo é resolvido de forma fixa dentro de `data/`, nunca
+  recebido como parâmetro externo — evitando leitura de arquivos fora
+  dessa pasta.
+
+> **Nota:** esta tool é **somente leitura** e não executa nenhuma ação
+> destrutiva, irreversível ou externa. O controle de ação sensível —
+> que exige aprovação humana antes de disparar uma notificação — é
+> implementado nas Etapas 7 e 12, sobre uma ferramenta diferente desta.

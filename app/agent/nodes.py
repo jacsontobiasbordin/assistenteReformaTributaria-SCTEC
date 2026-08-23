@@ -9,7 +9,15 @@ para decidir roteamento, autonomia ou execução de ferramentas.
 
 from __future__ import annotations
 
+from pydantic import ValidationError
+
 from app.agent.state import AgentState
+from app.tools.local_kb import (
+    BaseLocalIndisponivelError,
+    CenarioNaoEncontradoError,
+    consultar_cenario,
+)
+from app.tools.schemas import ConsultaCenarioInput
 
 _PALAVRAS_CHAVE_POR_CENARIO = {
     "cadastro_produtos": [
@@ -62,6 +70,21 @@ def identificar_cenario(state: AgentState) -> dict:
             return {"cenario_identificado": cenario}
 
     return {"cenario_identificado": "fora_de_escopo"}
+
+
+def consultar_base_local(state: AgentState) -> dict:
+    alertas = list(state.get("alertas", []))
+
+    try:
+        payload = ConsultaCenarioInput(cenario=state["cenario_identificado"])
+        resposta = consultar_cenario(payload)
+        return {"dados_base_local": resposta.model_dump(), "alertas": alertas}
+    except (ValidationError, CenarioNaoEncontradoError, BaseLocalIndisponivelError):
+        alertas.append(
+            "Nao foi possivel consultar a base local de conhecimento para "
+            "este cenario no momento."
+        )
+        return {"dados_base_local": None, "alertas": alertas}
 
 
 def responder_entrada_invalida(state: AgentState) -> dict:

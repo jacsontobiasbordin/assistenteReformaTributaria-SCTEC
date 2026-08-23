@@ -1,1 +1,15 @@
-# Preenchido na Etapa 2 (configuração multi-LLM e requirements)
+# Versoes serao fixadas apos o primeiro teste de instalacao
+langgraph
+langchain
+langchain-core
+langchain-google-genai
+langchain-anthropic
+langchain-openai
+python-dotenv
+pydantic
+pydantic-settings
+fastapi
+uvicorn
+pytest
+pytest-cov
+ruff

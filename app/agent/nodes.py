@@ -124,12 +124,22 @@ def gerar_analise(state: AgentState) -> dict:
     alertas = list(state.get("alertas", []))
 
     contexto = json.dumps(state.get("dados_base_local"), ensure_ascii=False, indent=2)
+
+    partes_mensagem = []
+    historico = state.get("historico") or []
+    if historico:
+        ultimas_entradas = json.dumps(historico[-2:], ensure_ascii=False, indent=2)
+        partes_mensagem.append(
+            f"Contexto de perguntas anteriores nesta sessao:\n{ultimas_entradas}"
+        )
+    partes_mensagem.append(f"Pergunta do usuario: {state['pergunta_usuario']}")
+    partes_mensagem.append(
+        f"Contexto recuperado da base local (dados_base_local):\n{contexto}"
+    )
+
     mensagens = [
         SystemMessage(SYSTEM_PROMPT_ANALISE),
-        HumanMessage(
-            f"Pergunta do usuario: {state['pergunta_usuario']}\n\n"
-            f"Contexto recuperado da base local (dados_base_local):\n{contexto}"
-        ),
+        HumanMessage("\n\n".join(partes_mensagem)),
     ]
 
     try:
@@ -165,6 +175,19 @@ def validar_resposta(state: AgentState) -> dict:
     # Node "passivo": nao altera o estado. Existe apenas para a decisao de
     # roteamento (retry vs. sucesso vs. falha definitiva) feita no grafo.
     return {}
+
+
+def registrar_historico(state: AgentState) -> dict:
+    # So roda no caminho de sucesso (resposta valida): perguntas invalidas
+    # ou fora de escopo nao agregam contexto util para perguntas futuras
+    # na mesma sessao, entao nao valem a pena reter na memoria de curto
+    # prazo.
+    entrada = {
+        "pergunta": state["pergunta_usuario"],
+        "cenario": state["cenario_identificado"],
+        "resumo": state["resposta_estruturada"]["cenario_analisado"],
+    }
+    return {"historico": [entrada]}
 
 
 def responder_erro_geracao(state: AgentState) -> dict:

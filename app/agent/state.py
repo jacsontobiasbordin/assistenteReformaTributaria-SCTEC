@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import TypedDict
+from operator import add
+from typing import Annotated, TypedDict
 
 
 class AgentState(TypedDict):
@@ -35,6 +36,16 @@ class AgentState(TypedDict):
             `gerar_analise` para a pergunta atual, usado para limitar o
             retry a `MAX_TENTATIVAS_GERACAO`. Valor padrão `0` quando não
             informado na chamada de `.invoke()`.
+        historico: memória de curto prazo da sessão (mesmo `thread_id`,
+            via checkpointer `MemorySaver`). Cada entrada resume uma
+            pergunta respondida com sucesso. Diferente de todos os
+            outros campos deste estado — que são recalculados e
+            sobrescritos a cada nova pergunta, para não "vazar" cenário,
+            dados recuperados ou alertas de uma pergunta para outra —
+            este campo usa o reducer `operator.add`, então a cada turno
+            o LangGraph CONCATENA a nova entrada ao histórico já
+            acumulado na sessão, em vez de substituí-lo. É esse
+            comportamento que caracteriza a memória de curto prazo.
     """
 
     pergunta_usuario: str
@@ -44,3 +55,4 @@ class AgentState(TypedDict):
     alertas: list[str]
     risco_detectado: bool
     tentativas_geracao: int
+    historico: Annotated[list[dict], add]

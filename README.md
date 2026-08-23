@@ -109,6 +109,38 @@ agêntica exigidos:
   desta etapa é uma detecção inicial simples por padrões de texto, sem
   LLM, que será refinada na Etapa 7.
 
+## Contexto e memória
+
+A memória de curto prazo entre perguntas da mesma sessão é implementada
+com o **checkpointer nativo do LangGraph** (`MemorySaver`,
+`langgraph.checkpoint.memory`), sem RAG e sem banco de dados persistente
+— adequado ao domínio, já que o histórico só precisa durar a conversa,
+não anos.
+
+- **Identificação da sessão:** cada conversa é um `thread_id` distinto.
+  O grafo é compilado com `grafo.compile(checkpointer=MemorySaver())`
+  (`app/agent/graph.py`), e cada chamada usa
+  `.invoke(estado, config=thread_config(thread_id))`, onde
+  `thread_config()` monta `{"configurable": {"thread_id": ...}}`.
+- **O que é persistido:** apenas o campo `historico` do `AgentState`, que
+  usa um reducer (`Annotated[list[dict], operator.add]`) para **acumular**
+  entre turnos, em vez de ser sobrescrito como os demais campos do
+  estado (cenário, dados recuperados e alertas são recalculados a cada
+  pergunta, para não vazar de uma pergunta para outra). Uma entrada só é
+  gravada no caminho de sucesso — pelo node `registrar_historico` —
+  porque perguntas inválidas ou fora de escopo não agregam contexto útil
+  para perguntas futuras na mesma sessão.
+- **Como é usado:** em `gerar_analise`, se a sessão já tiver histórico,
+  as 1-2 últimas entradas são incluídas como contexto adicional na
+  mensagem enviada ao LLM, antes da pergunta atual. Isso é o que torna a
+  memória efetivamente **usada** pela aplicação, e não apenas
+  armazenada.
+- **Limitação assumida:** o `MemorySaver` mantém o histórico em memória
+  do processo — ele reinicia se a aplicação for reiniciada. Isso é
+  suficiente para o escopo deste projeto (memória de curto prazo por
+  sessão de consulta); armazenamento persistente entre reinicializações
+  fica como evolução futura, fora do escopo desta etapa.
+
 ## Instalação e execução
 
 1. Crie e ative um ambiente virtual:

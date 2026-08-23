@@ -25,6 +25,8 @@ from app.tools.local_kb import (
 )
 from app.tools.schemas import ConsultaCenarioInput
 
+MAX_TENTATIVAS_GERACAO = 2
+
 _PADROES_SUSPEITOS = [
     "ignore as instrucoes",
     "esqueca as regras",
@@ -143,6 +145,39 @@ def gerar_analise(state: AgentState) -> dict:
             "Nao foi possivel gerar a analise no momento. Tentando novamente..."
         )
         return {"tentativas_geracao": tentativas, "alertas": alertas}
+
+
+def _resposta_e_valida(resposta: dict | None) -> bool:
+    if not resposta:
+        return False
+
+    campos_obrigatorios = (
+        "cenario_analisado",
+        "pontos_reforma_relacionados",
+        "impactos_tecnicos_erp",
+        "pontos_atencao",
+        "checklist_tecnico",
+    )
+    return all(resposta.get(campo) for campo in campos_obrigatorios)
+
+
+def validar_resposta(state: AgentState) -> dict:
+    # Node "passivo": nao altera o estado. Existe apenas para a decisao de
+    # roteamento (retry vs. sucesso vs. falha definitiva) feita no grafo.
+    return {}
+
+
+def responder_erro_geracao(state: AgentState) -> dict:
+    return {
+        "resposta_estruturada": {
+            "mensagem": (
+                "Nao foi possivel concluir a analise apos multiplas "
+                "tentativas. Tente novamente em instantes ou reformule a "
+                "pergunta."
+            )
+        },
+        "alertas": list(state.get("alertas", [])),
+    }
 
 
 def responder_entrada_invalida(state: AgentState) -> dict:

@@ -9,9 +9,15 @@ para decidir roteamento, autonomia ou execução de ferramentas.
 
 from __future__ import annotations
 
+import json
+
+from langchain_core.messages import HumanMessage, SystemMessage
 from pydantic import ValidationError
 
+from app.agent.prompts import SYSTEM_PROMPT_ANALISE
+from app.agent.schemas import AnaliseEstruturada
 from app.agent.state import AgentState
+from app.llm.factory import get_llm
 from app.tools.local_kb import (
     BaseLocalIndisponivelError,
     CenarioNaoEncontradoError,
@@ -103,6 +109,40 @@ def consultar_base_local(state: AgentState) -> dict:
             "este cenario no momento."
         )
         return {"dados_base_local": None, "alertas": alertas}
+
+
+def gerar_analise(state: AgentState) -> dict:
+    """Unico node agentico do projeto.
+
+    Usa o LLM (via `get_llm()`) apenas para sintetizar a resposta final a
+    partir do contexto ja recuperado por `consultar_base_local` — nunca
+    para decidir roteamento, autonomia ou execucao de ferramentas.
+    """
+    tentativas = state.get("tentativas_geracao", 0) + 1
+    alertas = list(state.get("alertas", []))
+
+    contexto = json.dumps(state.get("dados_base_local"), ensure_ascii=False, indent=2)
+    mensagens = [
+        SystemMessage(SYSTEM_PROMPT_ANALISE),
+        HumanMessage(
+            f"Pergunta do usuario: {state['pergunta_usuario']}\n\n"
+            f"Contexto recuperado da base local (dados_base_local):\n{contexto}"
+        ),
+    ]
+
+    try:
+        llm = get_llm()
+        estruturado = llm.with_structured_output(AnaliseEstruturada)
+        resultado = estruturado.invoke(mensagens)
+        return {
+            "tentativas_geracao": tentativas,
+            "resposta_estruturada": resultado.model_dump(),
+        }
+    except Exception:  # noqa: BLE001 - falha de LLM (rede/timeout/formato) nao pode propagar
+        alertas.append(
+            "Nao foi possivel gerar a analise no momento. Tentando novamente..."
+        )
+        return {"tentativas_geracao": tentativas, "alertas": alertas}
 
 
 def responder_entrada_invalida(state: AgentState) -> dict:

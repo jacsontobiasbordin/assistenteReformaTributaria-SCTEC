@@ -27,13 +27,31 @@ from app.tools.schemas import ConsultaCenarioInput
 
 MAX_TENTATIVAS_GERACAO = 2
 
+# Deteccao 100% deterministica (sem LLM), refinada na Etapa 7 a partir da
+# versao simples da Etapa 5 (ver docs/qa/refinamento-seguranca.md). Esta
+# lista pode continuar crescendo conforme novos padroes de tentativa de
+# manipulacao forem observados (ciclo de refinamento continuo).
 _PADROES_SUSPEITOS = [
+    # tentativas de sobrescrever as instrucoes do sistema
     "ignore as instrucoes",
     "esqueca as regras",
+    "desconsidere o que foi dito",
+    "voce agora e",
+    "novo system prompt",
+    "a partir de agora voce",
+    # tentativas de exfiltracao de informacao sensivel
     "revele",
+    "mostre sua configuracao",
+    "qual e sua api key",
     "system prompt",
     "api key",
-    "mostre sua configuracao",
+    "chave de api",
+    "token de acesso",
+    "suas instrucoes internas",
+    # marcadores comuns de injecao via delimitadores falsos
+    '"""system"""',
+    "[inst]",
+    "<system>",
 ]
 
 _PALAVRAS_CHAVE_POR_CENARIO = {
@@ -90,9 +108,9 @@ def identificar_cenario(state: AgentState) -> dict:
 
 
 def triagem_seguranca(state: AgentState) -> dict:
-    # Deteccao inicial simples (Etapa 5). Sera substituida por uma versao
-    # mais robusta na Etapa 7, junto com o cenario adversarial completo e
-    # o bloqueio de acao sensivel.
+    # Deteccao 100% deterministica (sem LLM). Versao refinada na Etapa 7
+    # a partir da deteccao simples da Etapa 5 — ver
+    # docs/qa/refinamento-seguranca.md para o ciclo de refinamento.
     pergunta = state["pergunta_usuario"].lower()
     risco_detectado = any(padrao in pergunta for padrao in _PADROES_SUSPEITOS)
     return {"risco_detectado": risco_detectado}

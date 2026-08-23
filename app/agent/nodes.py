@@ -167,6 +167,19 @@ def validar_resposta(state: AgentState) -> dict:
     return {}
 
 
+def registrar_historico(state: AgentState) -> dict:
+    # So roda no caminho de sucesso (resposta valida): perguntas invalidas
+    # ou fora de escopo nao agregam contexto util para perguntas futuras
+    # na mesma sessao, entao nao valem a pena reter na memoria de curto
+    # prazo.
+    entrada = {
+        "pergunta": state["pergunta_usuario"],
+        "cenario": state["cenario_identificado"],
+        "resumo": state["resposta_estruturada"]["cenario_analisado"],
+    }
+    return {"historico": [entrada]}
+
+
 def responder_erro_geracao(state: AgentState) -> dict:
     return {
         "resposta_estruturada": {

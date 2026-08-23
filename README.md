@@ -72,3 +72,59 @@ flowchart TD
     G -->|aprovado| H[disparar_notificacao_low_code] --> END5[FIM]
     G -->|nao aprovado/pendente| END6[FIM: resposta com alerta pendente]
 ```
+
+## Instalação e execução
+
+1. Crie e ative um ambiente virtual:
+
+   ```bash
+   python -m venv .venv
+   # Linux/macOS
+   source .venv/bin/activate
+   # Windows (PowerShell)
+   .venv\Scripts\Activate.ps1
+   ```
+
+2. Instale as dependências:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Copie `.env.example` para `.env` e preencha a chave do provedor
+   padrão (`GOOGLE_API_KEY`, obtida no
+   [Google AI Studio](https://aistudio.google.com/app/apikey)) — ou as
+   variáveis do provedor escolhido, caso troque `LLM_PROVIDER` (ver
+   seção abaixo):
+
+   ```bash
+   cp .env.example .env
+   ```
+
+4. Rode os testes:
+
+   ```bash
+   pytest tests/ -v
+   ```
+
+   Nesta etapa, os testes cobrem apenas a camada de configuração
+   (`app/config.py`) e a fábrica de LLM (`app/llm/factory.py`), sem
+   nenhuma chamada real a provedores de LLM — os testes rodam sem
+   nenhuma API key real configurada.
+
+### Provedores de LLM suportados
+
+A aplicação suporta três provedores de LLM, alternáveis apenas por
+variável de ambiente (`LLM_PROVIDER`), sem qualquer alteração de código:
+
+| `LLM_PROVIDER` | Modelo padrão | Variável de API key |
+|----------------|---------------|----------------------|
+| `gemini` (padrão) | `gemini-3-flash` | `GOOGLE_API_KEY` |
+| `anthropic`    | `claude-sonnet-5` | `ANTHROPIC_API_KEY` |
+| `openai`       | `gpt-5.1`      | `OPENAI_API_KEY` |
+
+O **Gemini 3 Flash** é o provedor padrão recomendado pelo melhor
+custo-benefício. Para trocar de provedor, altere `LLM_PROVIDER` no `.env`
+e preencha a API key correspondente — nenhum código precisa ser alterado,
+pois toda a lógica de seleção do client fica centralizada em
+`app/llm/factory.py`.

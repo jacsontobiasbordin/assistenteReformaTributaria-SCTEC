@@ -92,6 +92,23 @@ Todos os nodes implementados até aqui são **100% determinísticos**
 sintetizar a resposta final a partir do contexto já recuperado — nunca
 para decidir roteamento, autonomia ou execução de ferramentas.
 
+A partir da Etapa 5, o grafo cumpre todos os requisitos de arquitetura
+agêntica exigidos:
+
+- **Execução sequencial** ✓ — `validar_entrada → identificar_cenario → … → validar_resposta`;
+- **Ramificação condicional** ✓ — entrada inválida, fora de escopo e o
+  resultado de `validar_resposta` roteiam para nodes diferentes;
+- **Paralelização simples** ✓ — `consultar_base_local` e
+  `triagem_seguranca` rodam em paralelo (fan-out/fan-in na mesma
+  superstep do LangGraph), a partir de `identificar_cenario`;
+- **Condição de parada explícita** ✓ — `gerar_analise` nunca é chamado
+  mais que `MAX_TENTATIVAS_GERACAO` (2) vezes para a mesma pergunta;
+  esgotado o limite, o grafo encerra em `responder_erro_geracao`;
+- **Separação decisão do modelo / regra determinística** ✓ — apenas
+  `gerar_analise` usa o LLM (via `get_llm()`); a triagem de segurança
+  desta etapa é uma detecção inicial simples por padrões de texto, sem
+  LLM, que será refinada na Etapa 7.
+
 ## Instalação e execução
 
 1. Crie e ative um ambiente virtual:

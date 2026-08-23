@@ -131,6 +131,35 @@ def consultar_base_local(state: AgentState) -> dict:
         return {"dados_base_local": None, "alertas": alertas}
 
 
+def avaliar_seguranca(state: AgentState) -> dict:
+    # Node de juncao (fan-in) entre consultar_base_local e
+    # triagem_seguranca. Nao altera o estado — existe apenas para a
+    # decisao de roteamento (bloquear vs. seguir para gerar_analise)
+    # feita no grafo.
+    return {}
+
+
+def bloquear_acao_insegura(state: AgentState) -> dict:
+    # Bloqueio 100% deterministico, executado ANTES de qualquer chamada
+    # ao LLM. Nunca chama get_llm() — garante, por regra da aplicacao (e
+    # nao por "boa vontade" do modelo), que nenhuma instrucao maliciosa
+    # seja seguida e que nenhuma informacao sensivel (system prompt, API
+    # key) possa ser revelada por este caminho.
+    alertas = list(state.get("alertas", []))
+    alertas.append("Tentativa de instrucao nao autorizada detectada e bloqueada.")
+
+    return {
+        "resposta_estruturada": {
+            "cenario_analisado": "Solicitacao nao processada por motivo de seguranca.",
+            "pontos_reforma_relacionados": [],
+            "impactos_tecnicos_erp": [],
+            "pontos_atencao": ["A pergunta continha uma instrucao que nao sera seguida."],
+            "checklist_tecnico": [],
+        },
+        "alertas": alertas,
+    }
+
+
 def gerar_analise(state: AgentState) -> dict:
     """Unico node agentico do projeto.
 

@@ -124,12 +124,22 @@ def gerar_analise(state: AgentState) -> dict:
     alertas = list(state.get("alertas", []))
 
     contexto = json.dumps(state.get("dados_base_local"), ensure_ascii=False, indent=2)
+
+    partes_mensagem = []
+    historico = state.get("historico") or []
+    if historico:
+        ultimas_entradas = json.dumps(historico[-2:], ensure_ascii=False, indent=2)
+        partes_mensagem.append(
+            f"Contexto de perguntas anteriores nesta sessao:\n{ultimas_entradas}"
+        )
+    partes_mensagem.append(f"Pergunta do usuario: {state['pergunta_usuario']}")
+    partes_mensagem.append(
+        f"Contexto recuperado da base local (dados_base_local):\n{contexto}"
+    )
+
     mensagens = [
         SystemMessage(SYSTEM_PROMPT_ANALISE),
-        HumanMessage(
-            f"Pergunta do usuario: {state['pergunta_usuario']}\n\n"
-            f"Contexto recuperado da base local (dados_base_local):\n{contexto}"
-        ),
+        HumanMessage("\n\n".join(partes_mensagem)),
     ]
 
     try:

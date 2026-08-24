@@ -12,6 +12,7 @@ def get_llm() -> BaseChatModel:
         return ChatGoogleGenerativeAI(
             model=settings.gemini_model,
             google_api_key=settings.google_api_key,
+            timeout=settings.llm_timeout_seconds,
         )
 
     if settings.llm_provider == "anthropic":
@@ -20,6 +21,7 @@ def get_llm() -> BaseChatModel:
         return ChatAnthropic(
             model=settings.anthropic_model,
             api_key=settings.anthropic_api_key,
+            timeout=settings.llm_timeout_seconds,
         )
 
     if settings.llm_provider == "openai":
@@ -28,6 +30,7 @@ def get_llm() -> BaseChatModel:
         return ChatOpenAI(
             model=settings.openai_model,
             api_key=settings.openai_api_key,
+            timeout=settings.llm_timeout_seconds,
         )
 
     raise ValueError(f"LLM_PROVIDER nao suportado: '{settings.llm_provider}'")

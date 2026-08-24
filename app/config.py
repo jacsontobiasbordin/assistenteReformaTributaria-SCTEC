@@ -21,6 +21,11 @@ class Settings(BaseSettings):
 
     app_env: str = "development"
 
+    # Timeout explicito na chamada ao LLM (requisito 4.6, junto com o
+    # retry limitado de app/agent/nodes.py::MAX_TENTATIVAS_GERACAO e o
+    # fallback de app/agent/nodes.py::responder_erro_geracao).
+    llm_timeout_seconds: int = 30
+
     @model_validator(mode="after")
     def _validar_api_key_do_provedor_ativo(self) -> "Settings":
         chave_por_provedor = {

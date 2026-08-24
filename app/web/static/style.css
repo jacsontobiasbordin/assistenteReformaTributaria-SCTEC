@@ -20,6 +20,14 @@
   box-sizing: border-box;
 }
 
+/* O atributo [hidden] tem a mesma especificidade de uma classe, entao
+   regras de display abaixo (.progresso, .resultado etc.) o sobrescrevem
+   sem isto — o navegador so aplica display:none por padrao via folha de
+   estilos do agente (nao author), que author styles sempre vencem. */
+[hidden] {
+  display: none !important;
+}
+
 body {
   margin: 0;
   background: var(--cor-fundo);

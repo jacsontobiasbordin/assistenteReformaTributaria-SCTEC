@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+    branches: [develop, main]
+
+jobs:
+  lint-test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+      - name: Lint (ruff)
+        run: ruff check .
+      - name: Testes (pytest)
+        run: pytest tests/ -v --cov=app --cov-report=term-missing
+      - name: Build / validacao (import da aplicacao)
+        run: |
+          python -c "from app.web.main import app; print('OK: aplicacao importada com sucesso')"

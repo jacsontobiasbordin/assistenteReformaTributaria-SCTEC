@@ -1,0 +1,514 @@
+lint-test-build	Set up job	﻿2026-08-24T23:41:06.6682313Z Current runner version: '2.336.0'
+lint-test-build	Set up job	2026-08-24T23:41:06.6710335Z ##[group]Runner Image Provisioner
+lint-test-build	Set up job	2026-08-24T23:41:06.6711701Z Hosted Compute Agent
+lint-test-build	Set up job	2026-08-24T23:41:06.6712369Z Version: 20260729.566
+lint-test-build	Set up job	2026-08-24T23:41:06.6713005Z Commit: cf7153fe6e25b664e8693c24944bf2b00355d109
+lint-test-build	Set up job	2026-08-24T23:41:06.6713786Z Build Date: 2026-07-29T19:17:02Z
+lint-test-build	Set up job	2026-08-24T23:41:06.6714477Z Worker ID: {fb1c7362-5c58-464c-b803-864c00ce5a6b}
+lint-test-build	Set up job	2026-08-24T23:41:06.6715226Z Azure Region: westus
+lint-test-build	Set up job	2026-08-24T23:41:06.6715857Z ##[endgroup]
+lint-test-build	Set up job	2026-08-24T23:41:06.6717661Z ##[group]Operating System
+lint-test-build	Set up job	2026-08-24T23:41:06.6718432Z Ubuntu
+lint-test-build	Set up job	2026-08-24T23:41:06.6719023Z 24.04.4
+lint-test-build	Set up job	2026-08-24T23:41:06.6719514Z LTS
+lint-test-build	Set up job	2026-08-24T23:41:06.6720088Z ##[endgroup]
+lint-test-build	Set up job	2026-08-24T23:41:06.6720630Z ##[group]Runner Image
+lint-test-build	Set up job	2026-08-24T23:41:06.6721477Z Image: ubuntu-24.04
+lint-test-build	Set up job	2026-08-24T23:41:06.6722113Z Version: 20260816.277.1
+lint-test-build	Set up job	2026-08-24T23:41:06.6723170Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260816.277/images/ubuntu/Ubuntu2404-Readme.md
+lint-test-build	Set up job	2026-08-24T23:41:06.6724951Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260816.277
+lint-test-build	Set up job	2026-08-24T23:41:06.6725943Z ##[endgroup]
+lint-test-build	Set up job	2026-08-24T23:41:06.6727166Z ##[group]GITHUB_TOKEN Permissions
+lint-test-build	Set up job	2026-08-24T23:41:06.6729367Z Contents: read
+lint-test-build	Set up job	2026-08-24T23:41:06.6730020Z Metadata: read
+lint-test-build	Set up job	2026-08-24T23:41:06.6730583Z Packages: read
+lint-test-build	Set up job	2026-08-24T23:41:06.6731473Z ##[endgroup]
+lint-test-build	Set up job	2026-08-24T23:41:06.6733629Z Secret source: Actions
+lint-test-build	Set up job	2026-08-24T23:41:06.6734777Z Prepare workflow directory
+lint-test-build	Set up job	2026-08-24T23:41:06.7127192Z Prepare all required actions
+lint-test-build	Set up job	2026-08-24T23:41:06.7188211Z Getting action download info
+lint-test-build	Set up job	2026-08-24T23:41:07.0951876Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+lint-test-build	Set up job	2026-08-24T23:41:07.2164464Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+lint-test-build	Set up job	2026-08-24T23:41:07.4000950Z Complete job name: lint-test-build
+lint-test-build	Run actions/checkout@v4	﻿2026-08-24T23:41:07.4781484Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.4790482Z ##[group]Run actions/checkout@v4
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.4791548Z with:
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.4792189Z   repository: jacsontobiasbordin/assistenteReformaTributaria-SCTEC
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.4796245Z   token: ***
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.4796680Z   ssh-strict: true
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.4797107Z   ssh-user: git
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.4797546Z   persist-credentials: true
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.4798030Z   clean: true
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.4798472Z   sparse-checkout-cone-mode: true
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.4798986Z   fetch-depth: 1
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.4799408Z   fetch-tags: false
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.4799846Z   show-progress: true
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.4800281Z   lfs: false
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.4800732Z   submodules: false
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.4801308Z   set-safe-directory: true
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.4801856Z   allow-unsafe-pr-checkout: false
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.4802669Z ##[endgroup]
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.5823092Z Syncing repository: jacsontobiasbordin/assistenteReformaTributaria-SCTEC
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.5826056Z ##[group]Getting Git version info
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.5827776Z Working directory is '/home/runner/work/assistenteReformaTributaria-SCTEC/assistenteReformaTributaria-SCTEC'
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.5829986Z [command]/usr/bin/git version
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.5881600Z git version 2.55.0
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.5952439Z ##[endgroup]
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.5960362Z Temporarily overriding HOME='/home/runner/work/_temp/cb9cc433-3618-4a13-b5c6-7c9ef64a1188' before making global git config changes
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.5965713Z Adding repository directory to the temporary git global config as a safe directory
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.5968729Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/assistenteReformaTributaria-SCTEC/assistenteReformaTributaria-SCTEC
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6016643Z Deleting the contents of '/home/runner/work/assistenteReformaTributaria-SCTEC/assistenteReformaTributaria-SCTEC'
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6019840Z ##[group]Initializing the repository
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6025973Z [command]/usr/bin/git init /home/runner/work/assistenteReformaTributaria-SCTEC/assistenteReformaTributaria-SCTEC
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6135846Z hint: Using 'master' as the name for the initial branch. This default branch name
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6137711Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6141885Z hint: to use in all of your new repositories, which will suppress this warning,
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6143214Z hint: call:
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6143864Z hint:
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6144673Z hint: 	git config --global init.defaultBranch <name>
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6145754Z hint:
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6146786Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6148368Z hint: 'development'. The just-created branch can be renamed via this command:
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6149593Z hint:
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6150265Z hint: 	git branch -m <name>
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6151099Z hint:
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6152446Z hint: Disable this message with "git config set advice.defaultBranchName false"
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6154696Z Initialized empty Git repository in /home/runner/work/assistenteReformaTributaria-SCTEC/assistenteReformaTributaria-SCTEC/.git/
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6158762Z [command]/usr/bin/git remote add origin https://github.com/jacsontobiasbordin/assistenteReformaTributaria-SCTEC
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6202718Z ##[endgroup]
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6204010Z ##[group]Disabling automatic garbage collection
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6207278Z [command]/usr/bin/git config --local gc.auto 0
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6244614Z ##[endgroup]
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6245840Z ##[group]Setting up auth
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6252248Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6288015Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6697185Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6743954Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.6989658Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.7030986Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.7262832Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.7307303Z ##[endgroup]
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.7333003Z ##[group]Fetching the repository
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:07.7335298Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +45c944ee5c277c7dfa58672a92154ba3b4db5837:refs/remotes/pull/31/merge
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.1982749Z From https://github.com/jacsontobiasbordin/assistenteReformaTributaria-SCTEC
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.1984301Z  * [new ref]         45c944ee5c277c7dfa58672a92154ba3b4db5837 -> pull/31/merge
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.1988095Z ##[endgroup]
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.1989086Z ##[group]Determining the checkout info
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.1990926Z ##[endgroup]
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.1997377Z [command]/usr/bin/git sparse-checkout disable
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2058736Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2090427Z ##[group]Checking out the ref
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2093909Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/31/merge
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2209013Z Note: switching to 'refs/remotes/pull/31/merge'.
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2210405Z 
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2210849Z You are in 'detached HEAD' state. You can look around, make experimental
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2212210Z changes and commit them, and you can discard any commits you make in this
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2213190Z state without impacting any branches by switching back to a branch.
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2213751Z 
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2214179Z If you want to create a new branch to retain commits you create, you may
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2215074Z do so (now or later) by using -c with the switch command. Example:
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2215590Z 
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2215825Z   git switch -c <new-branch-name>
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2216195Z 
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2216425Z Or undo this operation with:
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2216763Z 
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2216971Z   git switch -
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2217253Z 
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2217670Z Turn off this advice by setting config variable advice.detachedHead to false
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2218619Z 
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2219715Z HEAD is now at 45c944e Merge 7c264c3b3ee91c723d88585a4945cc336d71df66 into 1a11078018d99ca2d7ead9cfb44988331769c9c6
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2222224Z ##[endgroup]
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2263838Z [command]/usr/bin/git log -1 --format=%H
+lint-test-build	Run actions/checkout@v4	2026-08-24T23:41:08.2290520Z 45c944ee5c277c7dfa58672a92154ba3b4db5837
+lint-test-build	Run actions/setup-python@v5	﻿2026-08-24T23:41:08.2596015Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+lint-test-build	Run actions/setup-python@v5	2026-08-24T23:41:08.2598836Z ##[group]Run actions/setup-python@v5
+lint-test-build	Run actions/setup-python@v5	2026-08-24T23:41:08.2599409Z with:
+lint-test-build	Run actions/setup-python@v5	2026-08-24T23:41:08.2599844Z   python-version: 3.11
+lint-test-build	Run actions/setup-python@v5	2026-08-24T23:41:08.2600339Z   check-latest: false
+lint-test-build	Run actions/setup-python@v5	2026-08-24T23:41:08.2604498Z   token: ***
+lint-test-build	Run actions/setup-python@v5	2026-08-24T23:41:08.2604977Z   update-environment: true
+lint-test-build	Run actions/setup-python@v5	2026-08-24T23:41:08.2605531Z   allow-prereleases: false
+lint-test-build	Run actions/setup-python@v5	2026-08-24T23:41:08.2606066Z   freethreaded: false
+lint-test-build	Run actions/setup-python@v5	2026-08-24T23:41:08.2606541Z ##[endgroup]
+lint-test-build	Run actions/setup-python@v5	2026-08-24T23:41:08.4010092Z ##[group]Installed versions
+lint-test-build	Run actions/setup-python@v5	2026-08-24T23:41:08.4138241Z (node:2288) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+lint-test-build	Run actions/setup-python@v5	2026-08-24T23:41:08.4140697Z (Use `node --trace-deprecation ...` to show where the warning was created)
+lint-test-build	Run actions/setup-python@v5	2026-08-24T23:41:08.4142563Z Successfully set up CPython (3.11.16)
+lint-test-build	Run actions/setup-python@v5	2026-08-24T23:41:08.4144293Z ##[endgroup]
+lint-test-build	Instalar dependencias	﻿2026-08-24T23:41:08.4340154Z ##[group]Run pip install -r requirements.txt
+lint-test-build	Instalar dependencias	2026-08-24T23:41:08.4341922Z [36;1mpip install -r requirements.txt[0m
+lint-test-build	Instalar dependencias	2026-08-24T23:41:08.4569434Z shell: /usr/bin/bash -e {0}
+lint-test-build	Instalar dependencias	2026-08-24T23:41:08.4570158Z env:
+lint-test-build	Instalar dependencias	2026-08-24T23:41:08.4570780Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Instalar dependencias	2026-08-24T23:41:08.4572256Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.16/x64/lib/pkgconfig
+lint-test-build	Instalar dependencias	2026-08-24T23:41:08.4573328Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Instalar dependencias	2026-08-24T23:41:08.4574340Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Instalar dependencias	2026-08-24T23:41:08.4575293Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Instalar dependencias	2026-08-24T23:41:08.4576209Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.16/x64/lib
+lint-test-build	Instalar dependencias	2026-08-24T23:41:08.4576975Z ##[endgroup]
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.1715624Z Collecting langgraph (from -r requirements.txt (line 2))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.2176071Z   Downloading langgraph-1.2.11-py3-none-any.whl.metadata (4.9 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.3012017Z Collecting langchain (from -r requirements.txt (line 3))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.3047896Z   Downloading langchain-1.3.16-py3-none-any.whl.metadata (6.1 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.3552150Z Collecting langchain-core (from -r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.3589843Z   Downloading langchain_core-1.6.0-py3-none-any.whl.metadata (4.8 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.3792905Z Collecting langchain-google-genai (from -r requirements.txt (line 5))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.3829203Z   Downloading langchain_google_genai-4.3.5-py3-none-any.whl.metadata (2.7 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.4047341Z Collecting langchain-anthropic (from -r requirements.txt (line 6))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.4079038Z   Downloading langchain_anthropic-1.6.1-py3-none-any.whl.metadata (3.5 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.4339672Z Collecting langchain-openai (from -r requirements.txt (line 7))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.4374181Z   Downloading langchain_openai-1.6.0-py3-none-any.whl.metadata (3.4 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.4527082Z Collecting python-dotenv (from -r requirements.txt (line 8))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.4559827Z   Downloading python_dotenv-1.2.3-py3-none-any.whl.metadata (29 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.5653344Z Collecting pydantic (from -r requirements.txt (line 9))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.5690700Z   Downloading pydantic-2.13.4-py3-none-any.whl.metadata (109 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.5973703Z Collecting pydantic-settings (from -r requirements.txt (line 10))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.6010277Z   Downloading pydantic_settings-2.15.0-py3-none-any.whl.metadata (3.9 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.6468701Z Collecting fastapi (from -r requirements.txt (line 11))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.6502139Z   Downloading fastapi-0.141.1-py3-none-any.whl.metadata (27 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.6770671Z Collecting uvicorn (from -r requirements.txt (line 12))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.6804529Z   Downloading uvicorn-0.52.4-py3-none-any.whl.metadata (6.6 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.7120739Z Collecting pytest (from -r requirements.txt (line 13))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.7156327Z   Downloading pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.7308470Z Collecting pytest-cov (from -r requirements.txt (line 14))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:11.7342479Z   Downloading pytest_cov-7.1.0-py3-none-any.whl.metadata (32 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.0766374Z Collecting ruff (from -r requirements.txt (line 15))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.0808242Z   Downloading ruff-0.16.4-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (26 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.1014078Z Collecting langgraph-checkpoint<5.0.0,>=4.1.0 (from langgraph->-r requirements.txt (line 2))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.1057393Z   Downloading langgraph_checkpoint-4.2.0-py3-none-any.whl.metadata (6.7 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.1222907Z Collecting langgraph-prebuilt<1.2.0,>=1.1.0 (from langgraph->-r requirements.txt (line 2))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.1261554Z   Downloading langgraph_prebuilt-1.1.0-py3-none-any.whl.metadata (5.2 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.1441230Z Collecting langgraph-sdk<0.5.0,>=0.4.2 (from langgraph->-r requirements.txt (line 2))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.1476236Z   Downloading langgraph_sdk-0.4.3-py3-none-any.whl.metadata (5.1 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.2695502Z Collecting xxhash>=3.5.0 (from langgraph->-r requirements.txt (line 2))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.2734565Z   Downloading xxhash-4.0.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (17 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.2902915Z Collecting httpx<1.0.0,>=0.23.0 (from langchain-core->-r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.2940101Z   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.3069594Z Collecting jsonpatch<2.0.0,>=1.33.0 (from langchain-core->-r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.3102017Z   Downloading jsonpatch-1.33-py2.py3-none-any.whl.metadata (3.0 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.3219666Z Collecting langchain-protocol>=0.0.17 (from langchain-core->-r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.3250528Z   Downloading langchain_protocol-0.0.18-py3-none-any.whl.metadata (2.4 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.4025638Z Collecting langsmith<1.0.0,>=0.3.45 (from langchain-core->-r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.4059556Z   Downloading langsmith-0.11.1-py3-none-any.whl.metadata (22 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.4262042Z Collecting packaging>=23.2.0 (from langchain-core->-r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.4296732Z   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.4663508Z Collecting pyyaml<7.0.0,>=5.3.0 (from langchain-core->-r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.4698487Z   Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.4839472Z Collecting tenacity!=8.4.0,<10.0.0,>=8.1.0 (from langchain-core->-r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.4869668Z   Downloading tenacity-9.1.4-py3-none-any.whl.metadata (1.2 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.5024735Z Collecting typing-extensions<5.0.0,>=4.7.0 (from langchain-core->-r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.5056546Z   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.6047634Z Collecting uuid-utils<1.0,>=0.12.0 (from langchain-core->-r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.6085736Z   Downloading uuid_utils-0.17.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.4 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.6194112Z Collecting annotated-types>=0.6.0 (from pydantic->-r requirements.txt (line 9))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:12.6228639Z   Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.2800061Z Collecting pydantic-core==2.46.4 (from pydantic->-r requirements.txt (line 9))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.2835781Z   Downloading pydantic_core-2.46.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.6 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.2947937Z Collecting typing-inspection>=0.4.2 (from pydantic->-r requirements.txt (line 9))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.2996767Z   Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.3179841Z Collecting anyio (from httpx<1.0.0,>=0.23.0->langchain-core->-r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.3211979Z   Downloading anyio-4.14.2-py3-none-any.whl.metadata (4.6 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.3385786Z Collecting certifi (from httpx<1.0.0,>=0.23.0->langchain-core->-r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.3434391Z   Downloading certifi-2026.7.22-py3-none-any.whl.metadata (2.5 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.3575039Z Collecting httpcore==1.* (from httpx<1.0.0,>=0.23.0->langchain-core->-r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.3607163Z   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.3757022Z Collecting idna (from httpx<1.0.0,>=0.23.0->langchain-core->-r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.3800621Z   Downloading idna-3.19-py3-none-any.whl.metadata (9.2 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.3917674Z Collecting h11>=0.16 (from httpcore==1.*->httpx<1.0.0,>=0.23.0->langchain-core->-r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.3949132Z   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.4073448Z Collecting jsonpointer>=1.9 (from jsonpatch<2.0.0,>=1.33.0->langchain-core->-r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.4104248Z   Downloading jsonpointer-3.1.1-py3-none-any.whl.metadata (2.4 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.4575072Z Collecting ormsgpack>=1.12.0 (from langgraph-checkpoint<5.0.0,>=4.1.0->langgraph->-r requirements.txt (line 2))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.4612436Z   Downloading ormsgpack-1.12.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.2 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.6893470Z Collecting orjson>=3.11.5 (from langgraph-sdk<0.5.0,>=0.4.2->langgraph->-r requirements.txt (line 2))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.6933902Z   Downloading orjson-3.12.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (41 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.7898217Z Collecting websockets<17,>=14 (from langgraph-sdk<0.5.0,>=0.4.2->langgraph->-r requirements.txt (line 2))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.7935222Z   Downloading websockets-16.1.1-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.8 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.8068060Z Collecting distro>=1.7.0 (from langsmith<1.0.0,>=0.3.45->langchain-core->-r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.8100838Z   Downloading distro-1.9.0-py3-none-any.whl.metadata (6.8 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.8256052Z Collecting requests-toolbelt>=1.0.0 (from langsmith<1.0.0,>=0.3.45->langchain-core->-r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.8290030Z   Downloading requests_toolbelt-1.0.0-py2.py3-none-any.whl.metadata (14 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.8852691Z Collecting requests>=2.0.0 (from langsmith<1.0.0,>=0.3.45->langchain-core->-r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.8889520Z   Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.8990029Z Collecting sniffio>=1.1 (from langsmith<1.0.0,>=0.3.45->langchain-core->-r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.9023086Z   Downloading sniffio-1.3.1-py3-none-any.whl.metadata (3.9 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.9663432Z Collecting zstandard>=0.23.0 (from langsmith<1.0.0,>=0.3.45->langchain-core->-r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.9702230Z   Downloading zstandard-0.25.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (3.3 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.9888361Z Collecting filetype<2.0.0,>=1.2.0 (from langchain-google-genai->-r requirements.txt (line 5))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:13.9919865Z   Downloading filetype-1.2.0-py2.py3-none-any.whl.metadata (6.5 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.0128460Z Collecting google-genai<3.0.0,>=1.65.0 (from langchain-google-genai->-r requirements.txt (line 5))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.0160945Z   Downloading google_genai-2.19.0-py3-none-any.whl.metadata (56 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.0492814Z Collecting google-auth<3.0.0,>=2.56.0 (from google-auth[requests]<3.0.0,>=2.56.0->google-genai<3.0.0,>=1.65.0->langchain-google-genai->-r requirements.txt (line 5))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.0531697Z   Downloading google_auth-2.57.0-py3-none-any.whl.metadata (6.0 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.0895586Z Collecting pyasn1-modules>=0.2.1 (from google-auth<3.0.0,>=2.56.0->google-auth[requests]<3.0.0,>=2.56.0->google-genai<3.0.0,>=1.65.0->langchain-google-genai->-r requirements.txt (line 5))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.0928176Z   Downloading pyasn1_modules-0.4.2-py3-none-any.whl.metadata (3.5 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.2590287Z Collecting cryptography>=38.0.3 (from google-auth<3.0.0,>=2.56.0->google-auth[requests]<3.0.0,>=2.56.0->google-genai<3.0.0,>=1.65.0->langchain-google-genai->-r requirements.txt (line 5))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.2624513Z   Downloading cryptography-50.0.0-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (4.3 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.3777130Z Collecting charset_normalizer<4,>=2 (from requests>=2.0.0->langsmith<1.0.0,>=0.3.45->langchain-core->-r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.3813361Z   Downloading charset_normalizer-3.5.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (45 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.4052430Z Collecting urllib3<3,>=1.26 (from requests>=2.0.0->langsmith<1.0.0,>=0.3.45->langchain-core->-r requirements.txt (line 4))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.4084991Z   Downloading urllib3-2.7.0-py3-none-any.whl.metadata (6.9 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.4867457Z Collecting anthropic<1.0.0,>=0.120.0 (from langchain-anthropic->-r requirements.txt (line 6))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.4901233Z   Downloading anthropic-0.125.0-py3-none-any.whl.metadata (3.3 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.5037826Z Collecting docstring-parser<1,>=0.15 (from anthropic<1.0.0,>=0.120.0->langchain-anthropic->-r requirements.txt (line 6))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.5068790Z   Downloading docstring_parser-0.18.0-py3-none-any.whl.metadata (3.5 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.5899532Z Collecting jiter<1,>=0.4.0 (from anthropic<1.0.0,>=0.120.0->langchain-anthropic->-r requirements.txt (line 6))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.5938128Z   Downloading jiter-0.16.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (5.2 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.6416697Z Collecting openai<4.0.0,>=2.45.0 (from langchain-openai->-r requirements.txt (line 7))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.6450770Z   Downloading openai-3.3.1-py3-none-any.whl.metadata (41 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.6864057Z Collecting tiktoken<1.0.0,>=0.7.0 (from langchain-openai->-r requirements.txt (line 7))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.6896519Z   Downloading tiktoken-0.14.0-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (6.7 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.7022194Z Collecting httpx2<3,>=2.7.0 (from openai<4.0.0,>=2.45.0->langchain-openai->-r requirements.txt (line 7))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.7053987Z   Downloading httpx2-2.12.0-py3-none-any.whl.metadata (9.5 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.7223488Z Collecting httpcore2==2.12.0 (from httpx2<3,>=2.7.0->openai<4.0.0,>=2.45.0->langchain-openai->-r requirements.txt (line 7))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.7256192Z   Downloading httpcore2-2.12.0-py3-none-any.whl.metadata (25 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.7388984Z Collecting truststore>=0.10 (from httpx2<3,>=2.7.0->openai<4.0.0,>=2.45.0->langchain-openai->-r requirements.txt (line 7))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:14.7420152Z   Downloading truststore-0.10.4-py3-none-any.whl.metadata (4.4 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.1387886Z Collecting regex (from tiktoken<1.0.0,>=0.7.0->langchain-openai->-r requirements.txt (line 7))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.1430671Z   Downloading regex-2026.7.19-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (40 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.1739768Z Collecting starlette>=0.46.0 (from fastapi->-r requirements.txt (line 11))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.1773501Z   Downloading starlette-1.6.0-py3-none-any.whl.metadata (6.4 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.1923787Z Collecting annotated-doc>=0.0.2 (from fastapi->-r requirements.txt (line 11))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.1955396Z   Downloading annotated_doc-0.0.5-py3-none-any.whl.metadata (6.5 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.2120410Z Collecting click>=7.0 (from uvicorn->-r requirements.txt (line 12))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.2153738Z   Downloading click-8.4.2-py3-none-any.whl.metadata (2.6 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.2263454Z Collecting iniconfig>=1.0.1 (from pytest->-r requirements.txt (line 13))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.2304163Z   Downloading iniconfig-2.3.0-py3-none-any.whl.metadata (2.5 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.2445034Z Collecting pluggy<2,>=1.5 (from pytest->-r requirements.txt (line 13))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.2476898Z   Downloading pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.2645660Z Collecting pygments>=2.7.2 (from pytest->-r requirements.txt (line 13))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.2680781Z   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.7072351Z Collecting coverage>=7.10.6 (from coverage[toml]>=7.10.6->pytest-cov->-r requirements.txt (line 14))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.7110905Z   Downloading coverage-7.15.4-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (8.6 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.8175678Z Collecting cffi>=2.0.0 (from cryptography>=38.0.3->google-auth<3.0.0,>=2.56.0->google-auth[requests]<3.0.0,>=2.56.0->google-genai<3.0.0,>=1.65.0->langchain-google-genai->-r requirements.txt (line 5))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.8237635Z   Downloading cffi-2.1.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.5 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.8353969Z Collecting pycparser (from cffi>=2.0.0->cryptography>=38.0.3->google-auth<3.0.0,>=2.56.0->google-auth[requests]<3.0.0,>=2.56.0->google-genai<3.0.0,>=1.65.0->langchain-google-genai->-r requirements.txt (line 5))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.8382169Z   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.8632652Z Collecting pyasn1<0.7.0,>=0.6.1 (from pyasn1-modules>=0.2.1->google-auth<3.0.0,>=2.56.0->google-auth[requests]<3.0.0,>=2.56.0->google-genai<3.0.0,>=1.65.0->langchain-google-genai->-r requirements.txt (line 5))
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.8662790Z   Downloading pyasn1-0.6.4-py3-none-any.whl.metadata (8.4 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.8867623Z Downloading langgraph-1.2.11-py3-none-any.whl (248 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.8948672Z Downloading langchain_core-1.6.0-py3-none-any.whl (570 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.9025811Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 570.0/570.0 kB 76.7 MB/s  0:00:00
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.9074394Z Downloading pydantic-2.13.4-py3-none-any.whl (472 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.9149638Z Downloading pydantic_core-2.46.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.9279453Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 180.0 MB/s  0:00:00
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.9312785Z Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.9372126Z Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.9427160Z Downloading jsonpatch-1.33-py2.py3-none-any.whl (12 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.9480205Z Downloading langgraph_checkpoint-4.2.0-py3-none-any.whl (56 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.9534206Z Downloading langgraph_prebuilt-1.1.0-py3-none-any.whl (41 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.9585360Z Downloading langgraph_sdk-0.4.3-py3-none-any.whl (161 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.9653731Z Downloading langsmith-0.11.1-py3-none-any.whl (744 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.9722340Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 744.6/744.6 kB 108.5 MB/s  0:00:00
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.9756030Z Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (806 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.9824231Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 806.6/806.6 kB 116.8 MB/s  0:00:00
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.9858909Z Downloading tenacity-9.1.4-py3-none-any.whl (28 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.9911456Z Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:15.9960707Z Downloading uuid_utils-0.17.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (324 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.0034325Z Downloading websockets-16.1.1-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (186 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.0127136Z Downloading langchain-1.3.16-py3-none-any.whl (147 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.0202888Z Downloading langchain_google_genai-4.3.5-py3-none-any.whl (74 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.0272597Z Downloading filetype-1.2.0-py2.py3-none-any.whl (19 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.0323522Z Downloading google_genai-2.19.0-py3-none-any.whl (1.1 MB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.0403362Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.1/1.1 MB 170.2 MB/s  0:00:00
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.0437024Z Downloading anyio-4.14.2-py3-none-any.whl (125 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.0493725Z Downloading distro-1.9.0-py3-none-any.whl (20 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.0545233Z Downloading google_auth-2.57.0-py3-none-any.whl (259 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.0614800Z Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.0679005Z Downloading charset_normalizer-3.5.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (262 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.0737280Z Downloading idna-3.19-py3-none-any.whl (68 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.0793753Z Downloading urllib3-2.7.0-py3-none-any.whl (131 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.0848493Z Downloading langchain_anthropic-1.6.1-py3-none-any.whl (57 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.0918943Z Downloading anthropic-0.125.0-py3-none-any.whl (1.2 MB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.0991881Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 184.1 MB/s  0:00:00
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.1027012Z Downloading docstring_parser-0.18.0-py3-none-any.whl (22 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.1082517Z Downloading jiter-0.16.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (347 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.1153234Z Downloading sniffio-1.3.1-py3-none-any.whl (10 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.1202013Z Downloading langchain_openai-1.6.0-py3-none-any.whl (125 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.1252881Z Downloading openai-3.3.1-py3-none-any.whl (1.7 MB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.1336639Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.7/1.7 MB 232.4 MB/s  0:00:00
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.1382942Z Downloading httpx2-2.12.0-py3-none-any.whl (95 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.1439802Z Downloading httpcore2-2.12.0-py3-none-any.whl (83 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.1490484Z Downloading tiktoken-0.14.0-cp311-cp311-manylinux_2_28_x86_64.whl (1.2 MB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.1557746Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 208.8 MB/s  0:00:00
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.1589177Z Downloading python_dotenv-1.2.3-py3-none-any.whl (22 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.1638453Z Downloading pydantic_settings-2.15.0-py3-none-any.whl (69 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.1705665Z Downloading fastapi-0.141.1-py3-none-any.whl (131 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.1758663Z Downloading uvicorn-0.52.4-py3-none-any.whl (79 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.1820878Z Downloading pytest-9.1.1-py3-none-any.whl (386 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.1877454Z Downloading pluggy-1.6.0-py3-none-any.whl (20 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.1927435Z Downloading pytest_cov-7.1.0-py3-none-any.whl (22 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.1977930Z Downloading ruff-0.16.4-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (10.3 MB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.2300872Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.3/10.3 MB 336.9 MB/s  0:00:00
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.2336553Z Downloading annotated_doc-0.0.5-py3-none-any.whl (5.3 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.2400564Z Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.2452769Z Downloading certifi-2026.7.22-py3-none-any.whl (136 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.2507812Z Downloading click-8.4.2-py3-none-any.whl (119 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.2561080Z Downloading coverage-7.15.4-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (255 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.2630133Z Downloading cryptography-50.0.0-cp311-abi3-manylinux_2_34_x86_64.whl (4.7 MB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.2795132Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.7/4.7 MB 327.2 MB/s  0:00:00
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.2830905Z Downloading cffi-2.1.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (217 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.2889216Z Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.2945191Z Downloading iniconfig-2.3.0-py3-none-any.whl (7.5 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.2997487Z Downloading jsonpointer-3.1.1-py3-none-any.whl (7.7 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.3050204Z Downloading langchain_protocol-0.0.18-py3-none-any.whl (7.2 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.3102874Z Downloading orjson-3.12.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (131 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.3157670Z Downloading ormsgpack-1.12.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (212 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.3211207Z Downloading packaging-26.3-py3-none-any.whl (129 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.3267623Z Downloading pyasn1_modules-0.4.2-py3-none-any.whl (181 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.3324207Z Downloading pyasn1-0.6.4-py3-none-any.whl (84 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.3377494Z Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.3443652Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 228.1 MB/s  0:00:00
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.3478121Z Downloading requests_toolbelt-1.0.0-py2.py3-none-any.whl (54 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.3532698Z Downloading starlette-1.6.0-py3-none-any.whl (75 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.3585094Z Downloading truststore-0.10.4-py3-none-any.whl (18 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.3633231Z Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.3689394Z Downloading xxhash-4.0.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (261 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.3743740Z Downloading zstandard-0.25.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (5.6 MB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.4043660Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.6/5.6 MB 204.8 MB/s  0:00:00
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.4077673Z Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.4144224Z Downloading regex-2026.7.19-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (801 kB)
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.4198587Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 801.4/801.4 kB 168.4 MB/s  0:00:00
+lint-test-build	Instalar dependencias	2026-08-24T23:41:16.9103190Z Installing collected packages: filetype, zstandard, xxhash, websockets, uuid-utils, urllib3, typing-extensions, truststore, tenacity, sniffio, ruff, regex, pyyaml, python-dotenv, pygments, pycparser, pyasn1, pluggy, packaging, ormsgpack, orjson, jsonpointer, jiter, iniconfig, idna, h11, docstring-parser, distro, coverage, click, charset_normalizer, certifi, annotated-types, annotated-doc, uvicorn, typing-inspection, requests, pytest, pydantic-core, pyasn1-modules, langchain-protocol, jsonpatch, httpcore2, httpcore, cffi, anyio, tiktoken, starlette, requests-toolbelt, pytest-cov, pydantic, httpx2, httpx, cryptography, pydantic-settings, openai, langsmith, google-auth, fastapi, anthropic, langchain-core, langgraph-sdk, langgraph-checkpoint, langchain-openai, langchain-anthropic, google-genai, langgraph-prebuilt, langchain-google-genai, langgraph, langchain
+lint-test-build	Instalar dependencias	2026-08-24T23:41:24.5113109Z 
+lint-test-build	Instalar dependencias	2026-08-24T23:41:24.5147652Z Successfully installed annotated-doc-0.0.5 annotated-types-0.8.0 anthropic-0.125.0 anyio-4.14.2 certifi-2026.7.22 cffi-2.1.1 charset_normalizer-3.5.1 click-8.4.2 coverage-7.15.4 cryptography-50.0.0 distro-1.9.0 docstring-parser-0.18.0 fastapi-0.141.1 filetype-1.2.0 google-auth-2.57.0 google-genai-2.19.0 h11-0.16.0 httpcore-1.0.9 httpcore2-2.12.0 httpx-0.28.1 httpx2-2.12.0 idna-3.19 iniconfig-2.3.0 jiter-0.16.0 jsonpatch-1.33 jsonpointer-3.1.1 langchain-1.3.16 langchain-anthropic-1.6.1 langchain-core-1.6.0 langchain-google-genai-4.3.5 langchain-openai-1.6.0 langchain-protocol-0.0.18 langgraph-1.2.11 langgraph-checkpoint-4.2.0 langgraph-prebuilt-1.1.0 langgraph-sdk-0.4.3 langsmith-0.11.1 openai-3.3.1 orjson-3.12.0 ormsgpack-1.12.2 packaging-26.3 pluggy-1.6.0 pyasn1-0.6.4 pyasn1-modules-0.4.2 pycparser-3.0 pydantic-2.13.4 pydantic-core-2.46.4 pydantic-settings-2.15.0 pygments-2.21.0 pytest-9.1.1 pytest-cov-7.1.0 python-dotenv-1.2.3 pyyaml-6.0.3 regex-2026.7.19 requests-2.34.2 requests-toolbelt-1.0.0 ruff-0.16.4 sniffio-1.3.1 starlette-1.6.0 tenacity-9.1.4 tiktoken-0.14.0 truststore-0.10.4 typing-extensions-4.16.0 typing-inspection-0.4.4 urllib3-2.7.0 uuid-utils-0.17.0 uvicorn-0.52.4 websockets-16.1.1 xxhash-4.0.1 zstandard-0.25.0
+lint-test-build	Lint (ruff)	﻿2026-08-24T23:41:24.8390689Z ##[group]Run ruff check .
+lint-test-build	Lint (ruff)	2026-08-24T23:41:24.8390987Z [36;1mruff check .[0m
+lint-test-build	Lint (ruff)	2026-08-24T23:41:24.8430477Z shell: /usr/bin/bash -e {0}
+lint-test-build	Lint (ruff)	2026-08-24T23:41:24.8430747Z env:
+lint-test-build	Lint (ruff)	2026-08-24T23:41:24.8431013Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Lint (ruff)	2026-08-24T23:41:24.8431799Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.16/x64/lib/pkgconfig
+lint-test-build	Lint (ruff)	2026-08-24T23:41:24.8432230Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Lint (ruff)	2026-08-24T23:41:24.8432606Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Lint (ruff)	2026-08-24T23:41:24.8432978Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Lint (ruff)	2026-08-24T23:41:24.8433356Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.16/x64/lib
+lint-test-build	Lint (ruff)	2026-08-24T23:41:24.8433679Z ##[endgroup]
+lint-test-build	Lint (ruff)	2026-08-24T23:41:24.8579874Z All checks passed!
+lint-test-build	Testes (pytest)	﻿2026-08-24T23:41:24.8621604Z ##[group]Run pytest tests/ -v --cov=app --cov-report=term-missing
+lint-test-build	Testes (pytest)	2026-08-24T23:41:24.8622168Z [36;1mpytest tests/ -v --cov=app --cov-report=term-missing[0m
+lint-test-build	Testes (pytest)	2026-08-24T23:41:24.8660937Z shell: /usr/bin/bash -e {0}
+lint-test-build	Testes (pytest)	2026-08-24T23:41:24.8661672Z env:
+lint-test-build	Testes (pytest)	2026-08-24T23:41:24.8661966Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Testes (pytest)	2026-08-24T23:41:24.8662411Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.16/x64/lib/pkgconfig
+lint-test-build	Testes (pytest)	2026-08-24T23:41:24.8662830Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Testes (pytest)	2026-08-24T23:41:24.8663199Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Testes (pytest)	2026-08-24T23:41:24.8663577Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Testes (pytest)	2026-08-24T23:41:24.8663949Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.16/x64/lib
+lint-test-build	Testes (pytest)	2026-08-24T23:41:24.8664270Z ##[endgroup]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:26.7068728Z ============================= test session starts ==============================
+lint-test-build	Testes (pytest)	2026-08-24T23:41:26.7070163Z platform linux -- Python 3.11.16, pytest-9.1.1, pluggy-1.6.0 -- /opt/hostedtoolcache/Python/3.11.16/x64/bin/python
+lint-test-build	Testes (pytest)	2026-08-24T23:41:26.7072033Z cachedir: .pytest_cache
+lint-test-build	Testes (pytest)	2026-08-24T23:41:26.7072998Z rootdir: /home/runner/work/assistenteReformaTributaria-SCTEC/assistenteReformaTributaria-SCTEC
+lint-test-build	Testes (pytest)	2026-08-24T23:41:26.7074196Z plugins: anyio-4.14.2, cov-7.1.0, langsmith-0.11.1
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.6964895Z collecting ... collected 48 items
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.6965397Z 
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.7383624Z tests/test_agent_graph.py::test_grafo_identifica_cenario_consulta_local_e_gera_analise[Como devo cadastrar o NCM dos meus produtos?-cadastro_produtos] PASSED [  2%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.7717112Z tests/test_agent_graph.py::test_grafo_identifica_cenario_consulta_local_e_gera_analise[Preciso emitir uma NF-e com os novos campos-emissao_nota_fiscal] PASSED [  4%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.8068094Z tests/test_agent_graph.py::test_grafo_identifica_cenario_consulta_local_e_gera_analise[Como calcular o IBS e a CBS na venda?-calculo_impostos] PASSED [  6%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.8316992Z tests/test_agent_graph.py::test_grafo_com_pergunta_vazia_retorna_mensagem_de_validacao PASSED [  8%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.8578065Z tests/test_agent_graph.py::test_grafo_com_pergunta_fora_de_escopo PASSED [ 10%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.8592110Z tests/test_agent_graph.py::test_cenarios_suportados_cobrem_os_tres_definidos PASSED [ 12%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.8958081Z tests/test_agent_graph.py::test_gerar_analise_com_retry_ate_sucesso_na_segunda_tentativa PASSED [ 14%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.9330410Z tests/test_agent_graph.py::test_gerar_analise_falha_em_todas_tentativas_aciona_fallback PASSED [ 16%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.9656027Z tests/test_agent_graph.py::test_triagem_seguranca_detecta_padrao_suspeito PASSED [ 18%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.9689855Z tests/test_config.py::test_get_settings_carrega_provedor_gemini PASSED   [ 20%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.9719033Z tests/test_config.py::test_get_settings_e_cacheado PASSED                [ 22%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.9753518Z tests/test_config.py::test_provedor_ativo_sem_api_key_gera_erro_claro PASSED [ 25%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.9783852Z tests/test_config.py::test_provedor_invalido_gera_erro PASSED            [ 27%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:28.0225726Z tests/test_e2e_cenarios.py::test_e2e_fluxo_principal_pergunta_legitima_retorna_analise_completa PASSED [ 29%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:28.0412731Z tests/test_e2e_cenarios.py::test_e2e_cenario_de_risco_prompt_injection_bloqueia_via_api PASSED [ 31%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:28.0596041Z tests/test_e2e_cenarios.py::test_e2e_cenario_de_risco_com_acentuacao_correta_tambem_bloqueia_via_api PASSED [ 33%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:28.7851006Z tests/test_llm_factory.py::test_get_llm_retorna_chat_google_generative_ai PASSED [ 35%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:29.9423500Z tests/test_llm_factory.py::test_get_llm_retorna_chat_anthropic PASSED    [ 37%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.0918914Z tests/test_llm_factory.py::test_get_llm_retorna_chat_openai PASSED       [ 39%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.0953718Z tests/test_llm_factory.py::test_get_llm_com_provedor_invalido_levanta_erro PASSED [ 41%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.0974094Z tests/test_local_kb.py::test_consultar_cenario_valido_retorna_resposta_completa[cadastro_produtos] PASSED [ 43%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.0993206Z tests/test_local_kb.py::test_consultar_cenario_valido_retorna_resposta_completa[calculo_impostos] PASSED [ 45%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.1011694Z tests/test_local_kb.py::test_consultar_cenario_valido_retorna_resposta_completa[emissao_nota_fiscal] PASSED [ 47%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.1027840Z tests/test_local_kb.py::test_consulta_cenario_input_rejeita_valor_invalido PASSED [ 50%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.1046414Z tests/test_local_kb.py::test_carregar_base_lanca_erro_quando_arquivo_nao_existe PASSED [ 52%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.1064534Z tests/test_local_kb.py::test_listar_cenarios_disponiveis_retorna_os_tres_cenarios PASSED [ 54%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.1535023Z tests/test_memoria.py::test_segunda_pergunta_mesma_sessao_ve_historico_e_usa_como_contexto PASSED [ 56%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.1997839Z tests/test_memoria.py::test_sessoes_com_thread_id_diferentes_nao_compartilham_historico PASSED [ 58%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.2235386Z tests/test_memoria.py::test_pergunta_invalida_nao_gera_entrada_no_historico PASSED [ 60%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.2567575Z tests/test_observabilidade.py::test_execucao_completa_gera_logs_para_multiplos_nodes_com_mesmo_execution_id PASSED [ 62%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.2921332Z tests/test_observabilidade.py::test_execucao_completa_gera_auditoria_correlacionada_com_os_logs PASSED [ 64%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.4791374Z tests/test_observabilidade.py::test_registrar_auditoria_concorrente_nao_corrompe_o_arquivo PASSED [ 66%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.4830851Z tests/test_observabilidade.py::test_client_llm_e_instanciado_com_timeout_configurado PASSED [ 68%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.5140224Z tests/test_seguranca.py::test_cenario_adversarial_bloqueia_sem_chamar_llm PASSED [ 70%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.5479646Z tests/test_seguranca.py::test_portao_aprovacao_humana_para_calculo_impostos PASSED [ 72%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.5808941Z tests/test_seguranca.py::test_sem_aprovacao_necessaria_para_outros_cenarios PASSED [ 75%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.5827659Z tests/test_seguranca.py::test_triagem_seguranca_detecta_padrao_com_acentuacao_correta PASSED [ 77%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.5846160Z tests/test_seguranca.py::test_triagem_seguranca_detecta_instrucoes_acentuadas PASSED [ 79%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.5864620Z tests/test_seguranca.py::test_triagem_seguranca_detecta_espacos_extras_entre_palavras PASSED [ 81%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.5883089Z tests/test_seguranca.py::test_triagem_seguranca_detecta_injecao_em_ingles PASSED [ 83%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.5902497Z tests/test_seguranca.py::test_triagem_seguranca_detecta_prompt_de_sistema_em_ordem_invertida PASSED [ 85%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.6026721Z tests/test_web.py::test_raiz_serve_a_interface_web_estatica PASSED       [ 87%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.6077948Z tests/test_web.py::test_listar_cenarios_retorna_os_tres_cenarios_suportados PASSED [ 89%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.6271534Z tests/test_web.py::test_analisar_com_pergunta_valida_retorna_sessao_e_resposta_completa PASSED [ 91%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.6630790Z tests/test_web.py::test_segunda_pergunta_com_mesmo_session_id_reusa_memoria_da_sessao PASSED [ 93%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.6791736Z tests/test_web.py::test_analisar_com_pergunta_adversarial_bloqueia_sem_chamar_llm PASSED [ 95%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.6989482Z tests/test_web.py::test_analisar_calculo_impostos_exige_aprovacao_humana PASSED [ 97%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1199382Z tests/test_web.py::test_analisar_com_pergunta_vazia_retorna_alertas_preenchido PASSED [100%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1200182Z 
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1200448Z ================================ tests coverage ================================
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1201899Z _______________ coverage: platform linux, python 3.11.16-final-0 _______________
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1202469Z 
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1202712Z Name                                  Stmts   Miss  Cover   Missing
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1203383Z -------------------------------------------------------------------
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1225614Z app/__init__.py                           0      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1226712Z app/agent/__init__.py                     0      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1227270Z app/agent/graph.py                       57      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1227868Z app/agent/nodes.py                      106      8    92%   121, 160-165, 237-241, 246
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1228492Z app/agent/prompts.py                      1      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1229040Z app/agent/schemas.py                      7      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1229610Z app/agent/state.py                       14      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1230018Z app/config.py                            25      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1230365Z app/llm/__init__.py                       0      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1230731Z app/llm/factory.py                       14      1    93%   36
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1231289Z app/observability/__init__.py             0      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1231671Z app/observability/audit.py               14      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1232082Z app/observability/decorators.py          54      9    83%   60-89
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1232731Z app/observability/logging_config.py      20      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1233109Z app/tools/__init__.py                     0      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1233485Z app/tools/local_kb.py                    24      1    96%   41
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1233865Z app/tools/schemas.py                     17      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1234224Z app/web/__init__.py                       0      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1234592Z app/web/main.py                          30      3    90%   69-74
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1234968Z app/web/schemas.py                       10      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1235338Z -------------------------------------------------------------------
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1235704Z TOTAL                                   393     22    94%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1236070Z ============================== 48 passed in 6.10s ==============================
+lint-test-build	Build / validacao (import da aplicacao)	﻿2026-08-24T23:41:33.7688925Z ##[group]Run python -c "from app.web.main import app; print('OK: aplicacao importada com sucesso')"
+lint-test-build	Build / validacao (import da aplicacao)	2026-08-24T23:41:33.7689720Z [36;1mpython -c "from app.web.main import app; print('OK: aplicacao importada com sucesso')"[0m
+lint-test-build	Build / validacao (import da aplicacao)	2026-08-24T23:41:33.7728499Z shell: /usr/bin/bash -e {0}
+lint-test-build	Build / validacao (import da aplicacao)	2026-08-24T23:41:33.7728774Z env:
+lint-test-build	Build / validacao (import da aplicacao)	2026-08-24T23:41:33.7729059Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Build / validacao (import da aplicacao)	2026-08-24T23:41:33.7729559Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.16/x64/lib/pkgconfig
+lint-test-build	Build / validacao (import da aplicacao)	2026-08-24T23:41:33.7730046Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Build / validacao (import da aplicacao)	2026-08-24T23:41:33.7730471Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Build / validacao (import da aplicacao)	2026-08-24T23:41:33.7730911Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Build / validacao (import da aplicacao)	2026-08-24T23:41:33.7731663Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.16/x64/lib
+lint-test-build	Build / validacao (import da aplicacao)	2026-08-24T23:41:33.7732035Z ##[endgroup]
+lint-test-build	Build / validacao (import da aplicacao)	2026-08-24T23:41:34.6142590Z OK: aplicacao importada com sucesso
+lint-test-build	Post Run actions/setup-python@v5	﻿2026-08-24T23:41:34.7712737Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+lint-test-build	Post Run actions/setup-python@v5	2026-08-24T23:41:34.7714016Z Post job cleanup.
+lint-test-build	Post Run actions/setup-python@v5	2026-08-24T23:41:34.8927566Z (node:2463) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+lint-test-build	Post Run actions/setup-python@v5	2026-08-24T23:41:34.8928727Z (Use `node --trace-deprecation ...` to show where the warning was created)
+lint-test-build	Post Run actions/checkout@v4	﻿2026-08-24T23:41:34.9121977Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+lint-test-build	Post Run actions/checkout@v4	2026-08-24T23:41:34.9123259Z Post job cleanup.
+lint-test-build	Post Run actions/checkout@v4	2026-08-24T23:41:35.0048510Z [command]/usr/bin/git version
+lint-test-build	Post Run actions/checkout@v4	2026-08-24T23:41:35.0129418Z git version 2.55.0
+lint-test-build	Post Run actions/checkout@v4	2026-08-24T23:41:35.0174944Z Temporarily overriding HOME='/home/runner/work/_temp/48c5dadc-4445-477d-9316-bd2d9bf93793' before making global git config changes
+lint-test-build	Post Run actions/checkout@v4	2026-08-24T23:41:35.0176606Z Adding repository directory to the temporary git global config as a safe directory
+lint-test-build	Post Run actions/checkout@v4	2026-08-24T23:41:35.0182123Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/assistenteReformaTributaria-SCTEC/assistenteReformaTributaria-SCTEC
+lint-test-build	Post Run actions/checkout@v4	2026-08-24T23:41:35.0225460Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+lint-test-build	Post Run actions/checkout@v4	2026-08-24T23:41:35.0264628Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+lint-test-build	Post Run actions/checkout@v4	2026-08-24T23:41:35.0525135Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+lint-test-build	Post Run actions/checkout@v4	2026-08-24T23:41:35.0553842Z http.https://github.com/.extraheader
+lint-test-build	Post Run actions/checkout@v4	2026-08-24T23:41:35.0567418Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+lint-test-build	Post Run actions/checkout@v4	2026-08-24T23:41:35.0611614Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+lint-test-build	Post Run actions/checkout@v4	2026-08-24T23:41:35.0897218Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+lint-test-build	Post Run actions/checkout@v4	2026-08-24T23:41:35.0938856Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+lint-test-build	Complete job	﻿2026-08-24T23:41:35.1392344Z Cleaning up orphan processes
+lint-test-build	Complete job	2026-08-24T23:41:35.1697046Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

@@ -10,6 +10,7 @@ para decidir roteamento, autonomia ou execução de ferramentas.
 from __future__ import annotations
 
 import json
+import unicodedata
 
 from langchain_core.messages import HumanMessage, SystemMessage
 from pydantic import ValidationError
@@ -29,9 +30,13 @@ from app.tools.schemas import ConsultaCenarioInput
 MAX_TENTATIVAS_GERACAO = 2
 
 # Deteccao 100% deterministica (sem LLM), refinada na Etapa 7 a partir da
-# versao simples da Etapa 5 (ver docs/qa/refinamento-seguranca.md). Esta
-# lista pode continuar crescendo conforme novos padroes de tentativa de
-# manipulacao forem observados (ciclo de refinamento continuo).
+# versao simples da Etapa 5 (ver docs/qa/refinamento-seguranca.md) e
+# novamente na Etapa 10, apos code review com IA sobre o diff da Etapa 7
+# (ver docs/qa/code-review-etapa07-seguranca.md): a lista so cobria a
+# grafia sem acentos usada nos proprios padroes, entao a mesma frase em
+# portugues correto (com acentuacao normal) ou em ingles passava direto.
+# Esta lista pode continuar crescendo conforme novos padroes de tentativa
+# de manipulacao forem observados (ciclo de refinamento continuo).
 _PADROES_SUSPEITOS = [
     # tentativas de sobrescrever as instrucoes do sistema
     "ignore as instrucoes",
@@ -40,11 +45,17 @@ _PADROES_SUSPEITOS = [
     "voce agora e",
     "novo system prompt",
     "a partir de agora voce",
+    "ignore all previous instructions",
+    "ignore the above",
+    "you are now",
+    "disregard the above",
     # tentativas de exfiltracao de informacao sensivel
     "revele",
     "mostre sua configuracao",
     "qual e sua api key",
     "system prompt",
+    "prompt de sistema",
+    "reveal your system prompt",
     "api key",
     "chave de api",
     "token de acesso",
@@ -54,6 +65,21 @@ _PADROES_SUSPEITOS = [
     "[inst]",
     "<system>",
 ]
+
+
+def _normalizar_para_deteccao(texto: str) -> str:
+    """Remove acentos e colapsa espacos repetidos antes de comparar com
+    _PADROES_SUSPEITOS (que sao escritos em ASCII puro, sem acentuacao).
+
+    Sem isto, a mesma tentativa de injecao escrita em portugues com
+    acentuacao correta (ex.: "instruções", "você", "está") ou com espacos
+    extras entre as palavras evade a deteccao, mesmo contendo exatamente
+    o padrao suspeito em espirito.
+    """
+    sem_acentos = (
+        unicodedata.normalize("NFKD", texto).encode("ascii", "ignore").decode("ascii")
+    )
+    return " ".join(sem_acentos.lower().split())
 
 _PALAVRAS_CHAVE_POR_CENARIO = {
     "cadastro_produtos": [
@@ -113,9 +139,12 @@ def identificar_cenario(state: AgentState) -> dict:
 @observar("triagem_seguranca")
 def triagem_seguranca(state: AgentState) -> dict:
     # Deteccao 100% deterministica (sem LLM). Versao refinada na Etapa 7
-    # a partir da deteccao simples da Etapa 5 — ver
-    # docs/qa/refinamento-seguranca.md para o ciclo de refinamento.
-    pergunta = state["pergunta_usuario"].lower()
+    # a partir da deteccao simples da Etapa 5, e na Etapa 10 com
+    # normalizacao de acentos/espacos — ver
+    # docs/qa/refinamento-seguranca.md e
+    # docs/qa/code-review-etapa07-seguranca.md para o ciclo de
+    # refinamento.
+    pergunta = _normalizar_para_deteccao(state["pergunta_usuario"])
     risco_detectado = any(padrao in pergunta for padrao in _PADROES_SUSPEITOS)
     return {"risco_detectado": risco_detectado}
 

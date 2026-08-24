@@ -6,6 +6,12 @@
   --cor-texto-suave: #5b6472;
   --cor-primaria: #2954a2;
   --cor-primaria-hover: #1e3f80;
+  --cor-aviso-fundo: #fff6e0;
+  --cor-aviso-borda: #f0c96b;
+  --cor-aviso-texto: #7a5a00;
+  --cor-alerta-fundo: #fdecec;
+  --cor-alerta-borda: #f0a3a3;
+  --cor-alerta-texto: #8a1f1f;
   --raio: 12px;
   --sombra: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.06);
 }
@@ -170,6 +176,30 @@ button {
 .resultado > h2 {
   margin: 0;
   font-size: 1.15rem;
+}
+
+.banner {
+  border-radius: var(--raio);
+  padding: 14px 18px;
+  font-size: 0.9rem;
+  border: 1px solid transparent;
+}
+
+.banner ul {
+  margin: 6px 0 0;
+  padding-left: 20px;
+}
+
+.banner-aviso {
+  background: var(--cor-aviso-fundo);
+  border-color: var(--cor-aviso-borda);
+  color: var(--cor-aviso-texto);
+}
+
+.banner-alerta {
+  background: var(--cor-alerta-fundo);
+  border-color: var(--cor-alerta-borda);
+  color: var(--cor-alerta-texto);
 }
 
 #blocos-analise {

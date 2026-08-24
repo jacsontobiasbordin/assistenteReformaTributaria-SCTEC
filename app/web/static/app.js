@@ -8,6 +8,11 @@
   const progresso = document.getElementById("progresso");
   const secaoResultado = document.getElementById("resultado-section");
 
+  const bannerAprovacao = document.getElementById("banner-aprovacao");
+  const textoBannerAprovacao = document.getElementById("texto-banner-aprovacao");
+  const bannerAlerta = document.getElementById("banner-alerta");
+  const listaBannerAlerta = document.getElementById("lista-banner-alerta");
+
   const blocoMensagem = document.getElementById("bloco-mensagem");
   const textoMensagem = document.getElementById("texto-mensagem");
 
@@ -61,6 +66,21 @@
   function renderizarResultado(dados) {
     secaoResultado.hidden = false;
     esconderTodosOsBlocos();
+    bannerAprovacao.hidden = true;
+    bannerAlerta.hidden = true;
+
+    const alertas = dados.alertas || [];
+    if (alertas.length > 0) {
+      preencherLista(listaBannerAlerta, alertas);
+      bannerAlerta.hidden = false;
+    }
+
+    if (dados.aguardando_aprovacao_humana) {
+      textoBannerAprovacao.textContent =
+        (dados.resposta_estruturada && dados.resposta_estruturada.aviso_aprovacao) ||
+        "Esta análise requer aprovação humana antes de qualquer ação externa.";
+      bannerAprovacao.hidden = false;
+    }
 
     const resposta = dados.resposta_estruturada;
     if (resposta && "cenario_analisado" in resposta) {
@@ -132,8 +152,9 @@
     } catch (erro) {
       secaoResultado.hidden = false;
       esconderTodosOsBlocos();
-      textoMensagem.textContent = erro.message || "Erro inesperado ao analisar a pergunta.";
-      blocoMensagem.hidden = false;
+      bannerAprovacao.hidden = true;
+      preencherLista(listaBannerAlerta, [erro.message || "Erro inesperado ao analisar a pergunta."]);
+      bannerAlerta.hidden = false;
     } finally {
       progresso.hidden = true;
       btnAnalisar.disabled = false;

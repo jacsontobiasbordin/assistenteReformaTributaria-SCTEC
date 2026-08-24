@@ -323,9 +323,8 @@ espelha a estrutura de cada cenário no JSON, com os campos `resumo`,
 
 ## QA, observabilidade e DevOps
 
-> Seção parcial — DevOps com IA (Etapa 11) ainda será completado. Esta
-> seção já documenta observabilidade/resiliência (requisito 4.6) e QA
-> com IA (Etapa 10).
+> Esta seção documenta observabilidade/resiliência (requisito 4.6), QA
+> com IA (Etapa 10) e DevOps/CI com IA (Etapa 11).
 
 **Dois sinais de observabilidade correlacionados:**
 
@@ -381,3 +380,33 @@ exemplos fictícios):
 - **Priorização de testes por risco**, justificando por que o cenário
   adversarial (prompt injection) é o teste prioritário do projeto —
   ver [docs/qa/priorizacao-testes.md](docs/qa/priorizacao-testes.md).
+
+### DevOps: pipeline de CI e análise com IA
+
+O pipeline de CI (`.github/workflows/ci.yml`) roda em todo push/PR para
+`develop`/`main`: lint (`ruff`), testes (`pytest`, com cobertura) e uma
+etapa de build/validação (import da aplicação). Para rodar os mesmos
+passos localmente:
+
+```bash
+ruff check .
+pytest tests/ -v --cov=app --cov-report=term-missing
+python -c "from app.web.main import app; print('OK: aplicacao importada com sucesso')"
+```
+
+- **Análise dos logs reais do CI com IA** — o que cada etapa verificou,
+  se passou/falhou e por quê, avisos encontrados (incluindo um aviso
+  real de depreciação do Node.js 20 nas actions usadas) e se o tempo de
+  execução é razoável para o tamanho do projeto — em
+  [docs/qa/analise-logs-ci.md](docs/qa/analise-logs-ci.md).
+- **Detecção de anomalia e estimativa de tendência/risco com IA** —
+  a partir de um resumo agregado de `docs/evidencias/auditoria.jsonl`,
+  identificando que `gerar_analise` (o único node que chama o LLM)
+  concentra 100% da latência e dos erros observados, com uma estimativa
+  quantitativa de risco de fallback se a taxa de falha do provedor
+  aumentar — em [docs/qa/analise-anomalia-e-risco.md](docs/qa/analise-anomalia-e-risco.md).
+
+  > ⚠️ Os dados de anomalia/risco acima são **simulados**
+  > (`scripts/gerar_dados_simulados.py`), não produção real — o projeto
+  > ainda não tem uso real em produção, conforme permitido e exigido
+  > (documentado como tal) pelo requisito 4.8.

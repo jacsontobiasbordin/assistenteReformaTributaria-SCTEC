@@ -235,14 +235,15 @@ a versão atual) está documentado como ciclo de refinamento em
    uvicorn app.web.main:app --reload
    ```
 
-   O jeito mais rápido de demonstrar a aplicação — incluindo os dois
-   cenários de uso (principal e adversarial) — é pelo **Swagger UI**,
-   gerado automaticamente pelo FastAPI em
-   [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs). Não há
-   front-end HTML/JS customizado nesta etapa: a API local já é um
-   formato de interface aceito pelo requisito 5.1, e o Swagger UI é
-   suficiente para demonstração visual sem gastar tempo extra de
-   front-end.
+   [http://127.0.0.1:8000/](http://127.0.0.1:8000/) já abre a **interface
+   web completa** (Etapa 9.1: `app/web/static/`, HTML/CSS/JS estático,
+   sem framework front-end), com os dois cenários de uso demonstráveis
+   visualmente — pergunta válida (com os 5 blocos da análise) e pergunta
+   adversarial (bloqueio de segurança, banner de alerta). O
+   **Swagger UI** continua disponível como alternativa em
+   [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
+
+   ![Tela da interface web mostrando o bloqueio de uma pergunta adversarial, com o banner de alerta e os 5 blocos da análise](docs/apresentacao/tela-interface-web.png)
 
    Exemplo de chamada via `curl` — a segunda pergunta reusa o
    `session_id` retornado pela primeira, demonstrando a memória de

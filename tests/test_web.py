@@ -28,6 +28,13 @@ def _mockar_llm(monkeypatch, respostas):
     return llm_estruturado
 
 
+def test_raiz_serve_a_interface_web_estatica():
+    resposta = cliente.get("/")
+
+    assert resposta.status_code == 200
+    assert "Assistente para Reforma Tributária" in resposta.text
+
+
 def test_listar_cenarios_retorna_os_tres_cenarios_suportados():
     resposta = cliente.get("/api/cenarios")
 

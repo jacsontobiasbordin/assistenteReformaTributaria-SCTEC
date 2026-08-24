@@ -9,6 +9,7 @@ a `docs/evidencias/auditoria.jsonl`.
 from __future__ import annotations
 
 import json
+import threading
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -18,6 +19,12 @@ _ARQUIVO_AUDITORIA = (
     / "evidencias"
     / "auditoria.jsonl"
 )
+
+# consultar_base_local e triagem_seguranca (e outros pares de nodes em
+# fan-out) rodam em paralelo na mesma superstep do LangGraph, em threads
+# diferentes da mesma execucao. Sem este lock, duas escritas concorrentes
+# no mesmo arquivo podem se intercalar e corromper uma linha do jsonl.
+_LOCK = threading.Lock()
 
 
 def registrar_auditoria(
@@ -38,6 +45,9 @@ def registrar_auditoria(
         "erro": erro,
     }
 
-    _ARQUIVO_AUDITORIA.parent.mkdir(parents=True, exist_ok=True)
-    with _ARQUIVO_AUDITORIA.open("a", encoding="utf-8") as arquivo:
-        arquivo.write(json.dumps(entrada, ensure_ascii=False, default=str) + "\n")
+    linha = json.dumps(entrada, ensure_ascii=False, default=str) + "\n"
+
+    with _LOCK:
+        _ARQUIVO_AUDITORIA.parent.mkdir(parents=True, exist_ok=True)
+        with _ARQUIVO_AUDITORIA.open("a", encoding="utf-8") as arquivo:
+            arquivo.write(linha)

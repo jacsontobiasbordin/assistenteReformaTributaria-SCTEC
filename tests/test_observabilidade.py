@@ -1,5 +1,6 @@
 import json
 import logging
+import threading
 from unittest.mock import MagicMock
 
 from app.agent.graph import build_graph, thread_config
@@ -114,6 +115,44 @@ def test_execucao_completa_gera_auditoria_correlacionada_com_os_logs(
         isinstance(entrada["duracao_ms"], (int, float))
         for entrada in entradas_desta_execucao
     )
+
+
+def test_registrar_auditoria_concorrente_nao_corrompe_o_arquivo(tmp_path, monkeypatch):
+    # consultar_base_local e triagem_seguranca (fan-out da Etapa 5) rodam
+    # em paralelo, em threads diferentes da mesma execucao, e ambos
+    # chamam registrar_auditoria() quase ao mesmo tempo. Sem lock, as
+    # escritas concorrentes no mesmo arquivo podem se intercalar e gerar
+    # uma linha corrompida (nao parseavel como JSON) no jsonl.
+    from app.observability import audit
+
+    arquivo_temporario = tmp_path / "auditoria.jsonl"
+    monkeypatch.setattr(audit, "_ARQUIVO_AUDITORIA", arquivo_temporario)
+
+    def escrever_muitas_vezes(indice_thread: int) -> None:
+        for i in range(200):
+            audit.registrar_auditoria(
+                execution_id=f"thread-{indice_thread}",
+                node="node_teste",
+                status="sucesso",
+                duracao_ms=1.23,
+                decisao=f"iteracao_{i}",
+            )
+
+    threads = [
+        threading.Thread(target=escrever_muitas_vezes, args=(indice,))
+        for indice in range(8)
+    ]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
+
+    with arquivo_temporario.open(encoding="utf-8") as arquivo:
+        linhas = arquivo.readlines()
+
+    assert len(linhas) == 8 * 200
+    for linha in linhas:
+        json.loads(linha)  # levanta JSONDecodeError se alguma linha estiver corrompida
 
 
 def test_client_llm_e_instanciado_com_timeout_configurado(monkeypatch):

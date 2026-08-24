@@ -323,9 +323,9 @@ espelha a estrutura de cada cenário no JSON, com os campos `resumo`,
 
 ## QA, observabilidade e DevOps
 
-> Seção parcial — QA e DevOps com IA (Etapas 10 e 11) ainda serão
-> completados. Esta seção documenta, por enquanto, os requisitos de
-> observabilidade e resiliência (requisito 4.6).
+> Seção parcial — DevOps com IA (Etapa 11) ainda será completado. Esta
+> seção já documenta observabilidade/resiliência (requisito 4.6) e QA
+> com IA (Etapa 10).
 
 **Dois sinais de observabilidade correlacionados:**
 
@@ -359,3 +359,25 @@ documentada em
 | Timeout explícito na chamada ao LLM | `app/config.py` (`llm_timeout_seconds`, padrão 30s, configurável via `LLM_TIMEOUT_SECONDS`) + `app/llm/factory.py` (passado a cada client) |
 | Retry limitado | `app/agent/nodes.py` (`MAX_TENTATIVAS_GERACAO`, desde a Etapa 5) |
 | Fallback | `app/agent/nodes.py::responder_erro_geracao` (desde a Etapa 5) |
+
+### QA com IA
+
+IA aplicada em duas frentes de QA, sobre código real do projeto (não
+exemplos fictícios):
+
+- **Code review com IA** de um PR já mesclado — o PR de
+  segurança/governança (Etapa 7), escolhido por ser o de maior risco do
+  projeto. A revisão encontrou gaps reais na detecção de prompt
+  injection (a lista de padrões evadia a acentuação correta do
+  português, espaçamento irregular e frases em inglês) e um deles foi
+  corrigido nesta mesma etapa. Íntegra da revisão, com os gaps
+  corrigidos e os registrados-mas-não-corrigidos (com justificativa),
+  em [docs/qa/code-review-etapa07-seguranca.md](docs/qa/code-review-etapa07-seguranca.md).
+- **Teste E2E gerado/refinado com IA**
+  (`tests/test_e2e_cenarios.py`), cobrindo os dois cenários exigidos
+  pelo requisito 4.1 através da pilha completa (requisição HTTP → API →
+  grafo → resposta). Prompt usado e ajustes manuais em
+  [docs/qa/prompt-geracao-teste-e2e.md](docs/qa/prompt-geracao-teste-e2e.md).
+- **Priorização de testes por risco**, justificando por que o cenário
+  adversarial (prompt injection) é o teste prioritário do projeto —
+  ver [docs/qa/priorizacao-testes.md](docs/qa/priorizacao-testes.md).

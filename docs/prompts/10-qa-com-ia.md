@@ -18,7 +18,7 @@
   em `docs/qa/prompt-geracao-teste-e2e.md`); priorização de testes por
   risco documentada em `docs/qa/priorizacao-testes.md`, justificando o
   cenário adversarial como prioritário; README atualizado com as três
-  evidências; 51 testes passando ao todo no projeto.
+  evidências; 48 testes passando ao todo no projeto.
 
 ## Prompt
 

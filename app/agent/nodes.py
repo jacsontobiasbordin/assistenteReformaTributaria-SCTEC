@@ -18,6 +18,7 @@ from app.agent.prompts import SYSTEM_PROMPT_ANALISE
 from app.agent.schemas import AnaliseEstruturada
 from app.agent.state import AgentState
 from app.llm.factory import get_llm
+from app.observability.decorators import observar
 from app.tools.local_kb import (
     BaseLocalIndisponivelError,
     CenarioNaoEncontradoError,
@@ -83,6 +84,7 @@ _PALAVRAS_CHAVE_POR_CENARIO = {
 _TAMANHO_MAXIMO_PERGUNTA = 500
 
 
+@observar("validar_entrada")
 def validar_entrada(state: AgentState) -> dict:
     pergunta = state["pergunta_usuario"].strip()
     alertas = list(state.get("alertas", []))
@@ -97,6 +99,7 @@ def validar_entrada(state: AgentState) -> dict:
     return {"pergunta_usuario": pergunta, "alertas": alertas}
 
 
+@observar("identificar_cenario")
 def identificar_cenario(state: AgentState) -> dict:
     pergunta = state["pergunta_usuario"].lower()
 
@@ -107,6 +110,7 @@ def identificar_cenario(state: AgentState) -> dict:
     return {"cenario_identificado": "fora_de_escopo"}
 
 
+@observar("triagem_seguranca")
 def triagem_seguranca(state: AgentState) -> dict:
     # Deteccao 100% deterministica (sem LLM). Versao refinada na Etapa 7
     # a partir da deteccao simples da Etapa 5 — ver
@@ -116,6 +120,7 @@ def triagem_seguranca(state: AgentState) -> dict:
     return {"risco_detectado": risco_detectado}
 
 
+@observar("consultar_base_local")
 def consultar_base_local(state: AgentState) -> dict:
     alertas = list(state.get("alertas", []))
 
@@ -131,6 +136,7 @@ def consultar_base_local(state: AgentState) -> dict:
         return {"dados_base_local": None, "alertas": alertas}
 
 
+@observar("avaliar_seguranca")
 def avaliar_seguranca(state: AgentState) -> dict:
     # Node de juncao (fan-in) entre consultar_base_local e
     # triagem_seguranca. Nao altera o estado — existe apenas para a
@@ -139,6 +145,7 @@ def avaliar_seguranca(state: AgentState) -> dict:
     return {}
 
 
+@observar("bloquear_acao_insegura")
 def bloquear_acao_insegura(state: AgentState) -> dict:
     # Bloqueio 100% deterministico, executado ANTES de qualquer chamada
     # ao LLM. Nunca chama get_llm() — garante, por regra da aplicacao (e
@@ -160,6 +167,7 @@ def bloquear_acao_insegura(state: AgentState) -> dict:
     }
 
 
+@observar("gerar_analise")
 def gerar_analise(state: AgentState) -> dict:
     """Unico node agentico do projeto.
 
@@ -218,12 +226,14 @@ def _resposta_e_valida(resposta: dict | None) -> bool:
     return all(resposta.get(campo) for campo in campos_obrigatorios)
 
 
+@observar("validar_resposta")
 def validar_resposta(state: AgentState) -> dict:
     # Node "passivo": nao altera o estado. Existe apenas para a decisao de
     # roteamento (retry vs. sucesso vs. falha definitiva) feita no grafo.
     return {}
 
 
+@observar("solicitar_aprovacao_humana")
 def solicitar_aprovacao_humana(state: AgentState) -> dict:
     # Portao de aprovacao: roda apenas quando cenario_identificado ==
     # "calculo_impostos" (regra deterministica da aplicacao — calculo de
@@ -240,6 +250,7 @@ def solicitar_aprovacao_humana(state: AgentState) -> dict:
     return {"aguardando_aprovacao_humana": True, "resposta_estruturada": resposta}
 
 
+@observar("registrar_historico")
 def registrar_historico(state: AgentState) -> dict:
     # So roda no caminho de sucesso (resposta valida): perguntas invalidas
     # ou fora de escopo nao agregam contexto util para perguntas futuras
@@ -253,6 +264,7 @@ def registrar_historico(state: AgentState) -> dict:
     return {"historico": [entrada]}
 
 
+@observar("responder_erro_geracao")
 def responder_erro_geracao(state: AgentState) -> dict:
     return {
         "resposta_estruturada": {
@@ -266,11 +278,13 @@ def responder_erro_geracao(state: AgentState) -> dict:
     }
 
 
+@observar("responder_entrada_invalida")
 def responder_entrada_invalida(state: AgentState) -> dict:
     mensagem = " ".join(state.get("alertas", []))
     return {"resposta_estruturada": {"mensagem": mensagem}}
 
 
+@observar("responder_fora_de_escopo")
 def responder_fora_de_escopo(state: AgentState) -> dict:
     return {
         "resposta_estruturada": {

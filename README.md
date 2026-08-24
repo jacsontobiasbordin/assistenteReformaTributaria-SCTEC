@@ -290,3 +290,42 @@ espelha a estrutura de cada cenário no JSON, com os campos `resumo`,
 > destrutiva, irreversível ou externa. O controle de ação sensível —
 > que exige aprovação humana antes de disparar uma notificação — é
 > implementado nas Etapas 7 e 12, sobre uma ferramenta diferente desta.
+
+## QA, observabilidade e DevOps
+
+> Seção parcial — QA e DevOps com IA (Etapas 10 e 11) ainda serão
+> completados. Esta seção documenta, por enquanto, os requisitos de
+> observabilidade e resiliência (requisito 4.6).
+
+**Dois sinais de observabilidade correlacionados:**
+
+- **Log estruturado** — `configurar_logging()`
+  (`app/observability/logging_config.py`) configura o logger
+  `"reformatax"` para emitir cada registro como uma linha JSON no stdout
+  (`timestamp`, `level`, `logger`, `message` + campos extras).
+- **Trilha de auditoria** — `registrar_auditoria()`
+  (`app/observability/audit.py`) grava uma linha JSON por node em
+  `docs/evidencias/auditoria.jsonl`, com `execution_id`, `node`, `status`,
+  `duracao_ms`, `decisao` e `erro`.
+
+Os dois sinais são aplicados a **todos os nodes do grafo** por um único
+decorator — `observar()` (`app/observability/decorators.py`) — sem
+alterar a lógica de negócio de nenhum node. `execution_id` (`uuid4`) é
+gerado uma única vez pelo primeiro node do fluxo (`validar_entrada`) e
+reaproveitado por todos os demais (inclusive pelos dois nodes que rodam
+em paralelo, `consultar_base_local` e `triagem_seguranca`), o que
+permite correlacionar log e auditoria de uma mesma execução — provado em
+`tests/test_observabilidade.py`.
+
+Uma execução real investigada de ponta a ponta (sequência de nodes,
+latência, decisões em cada ramificação e ausência de erros) está
+documentada em
+[docs/evidencias/investigacao-execucao.md](docs/evidencias/investigacao-execucao.md).
+
+**Três práticas de resiliência (requisito 4.6):**
+
+| Prática | Onde está implementada |
+|---|---|
+| Timeout explícito na chamada ao LLM | `app/config.py` (`llm_timeout_seconds`, padrão 30s, configurável via `LLM_TIMEOUT_SECONDS`) + `app/llm/factory.py` (passado a cada client) |
+| Retry limitado | `app/agent/nodes.py` (`MAX_TENTATIVAS_GERACAO`, desde a Etapa 5) |
+| Fallback | `app/agent/nodes.py::responder_erro_geracao` (desde a Etapa 5) |

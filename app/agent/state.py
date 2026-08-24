@@ -52,6 +52,12 @@ class AgentState(TypedDict):
             o LangGraph CONCATENA a nova entrada ao histórico já
             acumulado na sessão, em vez de substituí-lo. É esse
             comportamento que caracteriza a memória de curto prazo.
+        execution_id: identificador (uuid4) de uma execução do grafo,
+            gerado por `app.observability.decorators.observar` no
+            primeiro node executado (`validar_entrada`) e reaproveitado
+            pelos demais nodes. Correlaciona o log estruturado e a
+            trilha de auditoria da mesma execução (Etapa 8). Valor
+            padrão `None` quando não informado na chamada de `.invoke()`.
     """
 
     pergunta_usuario: str
@@ -63,3 +69,4 @@ class AgentState(TypedDict):
     tentativas_geracao: int
     aguardando_aprovacao_humana: bool
     historico: Annotated[list[dict], add]
+    execution_id: str | None

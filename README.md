@@ -225,10 +225,39 @@ a versão atual) está documentado como ciclo de refinamento em
    pytest tests/ -v
    ```
 
-   Nesta etapa, os testes cobrem apenas a camada de configuração
-   (`app/config.py`) e a fábrica de LLM (`app/llm/factory.py`), sem
-   nenhuma chamada real a provedores de LLM — os testes rodam sem
-   nenhuma API key real configurada.
+   Nenhum teste do projeto faz chamada real a provedores de LLM (todos
+   mockam `get_llm()`) — os testes rodam sem nenhuma API key real
+   configurada.
+
+5. Suba a API local:
+
+   ```bash
+   uvicorn app.web.main:app --reload
+   ```
+
+   O jeito mais rápido de demonstrar a aplicação — incluindo os dois
+   cenários de uso (principal e adversarial) — é pelo **Swagger UI**,
+   gerado automaticamente pelo FastAPI em
+   [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs). Não há
+   front-end HTML/JS customizado nesta etapa: a API local já é um
+   formato de interface aceito pelo requisito 5.1, e o Swagger UI é
+   suficiente para demonstração visual sem gastar tempo extra de
+   front-end.
+
+   Exemplo de chamada via `curl` — a segunda pergunta reusa o
+   `session_id` retornado pela primeira, demonstrando a memória de
+   sessão da Etapa 6:
+
+   ```bash
+   curl -X POST http://127.0.0.1:8000/api/analisar \
+     -H "Content-Type: application/json" \
+     -d '{"pergunta": "Como calcular o IBS e a CBS na venda?"}'
+   # -> {"session_id": "...", "cenario_identificado": "calculo_impostos", ...}
+
+   curl -X POST http://127.0.0.1:8000/api/analisar \
+     -H "Content-Type: application/json" \
+     -d '{"pergunta": "E a classificacao tributaria, o que muda?", "session_id": "COLE_O_SESSION_ID_AQUI"}'
+   ```
 
 ### Provedores de LLM suportados
 

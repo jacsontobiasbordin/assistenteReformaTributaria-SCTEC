@@ -1,0 +1,12 @@
+lint-test-build	Lint (ruff)	﻿2026-08-24T23:41:24.8390689Z ##[group]Run ruff check .
+lint-test-build	Lint (ruff)	2026-08-24T23:41:24.8390987Z [36;1mruff check .[0m
+lint-test-build	Lint (ruff)	2026-08-24T23:41:24.8430477Z shell: /usr/bin/bash -e {0}
+lint-test-build	Lint (ruff)	2026-08-24T23:41:24.8430747Z env:
+lint-test-build	Lint (ruff)	2026-08-24T23:41:24.8431013Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Lint (ruff)	2026-08-24T23:41:24.8431799Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.16/x64/lib/pkgconfig
+lint-test-build	Lint (ruff)	2026-08-24T23:41:24.8432230Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Lint (ruff)	2026-08-24T23:41:24.8432606Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Lint (ruff)	2026-08-24T23:41:24.8432978Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Lint (ruff)	2026-08-24T23:41:24.8433356Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.16/x64/lib
+lint-test-build	Lint (ruff)	2026-08-24T23:41:24.8433679Z ##[endgroup]
+lint-test-build	Lint (ruff)	2026-08-24T23:41:24.8579874Z All checks passed!

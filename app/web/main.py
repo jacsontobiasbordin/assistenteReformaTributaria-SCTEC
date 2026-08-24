@@ -8,6 +8,7 @@ uso (principal e adversarial) sem front-end customizado.
 from __future__ import annotations
 
 import logging
+import uuid
 from functools import lru_cache
 
 from fastapi import FastAPI, HTTPException
@@ -41,8 +42,15 @@ def listar_cenarios() -> list[str]:
 
 @app.post("/api/analisar", response_model=AnaliseResponse)
 def analisar(payload: PerguntaRequest) -> AnaliseResponse:
-    session_id = payload.session_id
+    session_id = payload.session_id or str(uuid.uuid4())
 
+    # Estado de entrada: reseta explicitamente todos os campos que nao
+    # devem persistir entre perguntas da mesma sessao. O checkpointer
+    # (MemorySaver, Etapa 6) restaura o estado anterior da sessao — sem
+    # esse reset, alertas/risco/aprovacao de uma pergunta "vazariam" para
+    # a proxima. So `historico` deve realmente acumular, e por isso nao
+    # aparece aqui: fica a cargo do reducer `operator.add` do proprio
+    # AgentState, alimentado pelo node registrar_historico.
     estado = {
         "pergunta_usuario": payload.pergunta,
         "cenario_identificado": None,

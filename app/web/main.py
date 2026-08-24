@@ -1,8 +1,8 @@
 """API local que expoe o grafo completo do agente (Etapas 4 a 8).
 
-Formato de interface aceito pelo requisito 5.1. O Swagger UI automatico
-do FastAPI (rota /docs) e suficiente para demonstrar os dois cenarios de
-uso (principal e adversarial) sem front-end customizado.
+Formato de interface aceito pelo requisito 5.1. `/` serve a interface web
+estatica (Etapa 9.1, app/web/static/); o Swagger UI automatico do
+FastAPI (rota /docs) continua disponivel como alternativa.
 """
 
 from __future__ import annotations
@@ -12,6 +12,7 @@ import uuid
 from functools import lru_cache
 
 from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
 
 from app.agent.graph import build_graph, thread_config
 from app.observability.logging_config import configurar_logging
@@ -82,3 +83,8 @@ def analisar(payload: PerguntaRequest) -> AnaliseResponse:
         alertas=resultado.get("alertas", []),
         aguardando_aprovacao_humana=resultado.get("aguardando_aprovacao_humana", False),
     )
+
+
+# Montado por ultimo, depois de todas as rotas /api/*, para nao
+# conflitar com elas (StaticFiles com html=True serve index.html em "/").
+app.mount("/", StaticFiles(directory="app/web/static", html=True), name="static")

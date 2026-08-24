@@ -1,0 +1,247 @@
+:root {
+  --cor-fundo: #f4f6fa;
+  --cor-superficie: #ffffff;
+  --cor-borda: #e1e6ef;
+  --cor-texto: #1f2937;
+  --cor-texto-suave: #5b6472;
+  --cor-primaria: #2954a2;
+  --cor-primaria-hover: #1e3f80;
+  --raio: 12px;
+  --sombra: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+}
+
+.pagina {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 32px 20px 64px;
+}
+
+.cabecalho {
+  margin-bottom: 28px;
+}
+
+.cabecalho h1 {
+  margin: 0 0 8px;
+  font-size: 1.75rem;
+  color: var(--cor-primaria);
+}
+
+.descricao {
+  margin: 0;
+  color: var(--cor-texto-suave);
+  max-width: 60ch;
+}
+
+.cartao {
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  padding: 24px;
+}
+
+.cartao h2 {
+  margin-top: 0;
+  font-size: 1.15rem;
+}
+
+.rotulo-visualmente-oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.botoes-rapidos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.botao-rapido {
+  border: 1px solid var(--cor-borda);
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.botao-rapido:hover {
+  background: #e9edf5;
+  border-color: var(--cor-primaria);
+}
+
+textarea {
+  width: 100%;
+  resize: vertical;
+  border: 1px solid var(--cor-borda);
+  border-radius: 8px;
+  padding: 12px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--cor-texto);
+}
+
+textarea:focus {
+  outline: 2px solid var(--cor-primaria);
+  outline-offset: 1px;
+}
+
+.acoes-pergunta {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+button {
+  font-family: inherit;
+}
+
+.botao-primario {
+  background: var(--cor-primaria);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.botao-primario:hover:not(:disabled) {
+  background: var(--cor-primaria-hover);
+}
+
+.botao-primario:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.progresso {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--cor-texto-suave);
+  font-size: 0.9rem;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--cor-borda);
+  border-top-color: var(--cor-primaria);
+  border-radius: 50%;
+  animation: girar 0.7s linear infinite;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.resultado {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.resultado > h2 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+#blocos-analise {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bloco h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: var(--cor-primaria);
+}
+
+.bloco ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.bloco ul li {
+  margin-bottom: 6px;
+}
+
+.bloco ul li:last-child {
+  margin-bottom: 0;
+}
+
+.bloco-simples p {
+  margin: 0;
+}
+
+.acoes-resultado {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.acoes-resultado button {
+  border: 1px solid var(--cor-borda);
+  background: var(--cor-superficie);
+  color: var(--cor-texto);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.acoes-resultado button:hover:not(:disabled) {
+  background: #e9edf5;
+  border-color: var(--cor-primaria);
+}
+
+.acoes-resultado button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.rodape {
+  margin-top: 40px;
+  text-align: center;
+  color: var(--cor-texto-suave);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 480px) {
+  .pagina {
+    padding: 20px 14px 48px;
+  }
+
+  .cartao {
+    padding: 18px;
+  }
+}

@@ -21,4 +21,5 @@ jobs:
       - name: Testes (pytest)
         run: pytest tests/ -v --cov=app --cov-report=term-missing
       - name: Build / validacao (import da aplicacao)
-        run: python -c "from app.web.main import app; print('OK: aplicacao importada com sucesso')"
+        run: |
+          python -c "from app.web.main import app; print('OK: aplicacao importada com sucesso')"

@@ -3,6 +3,7 @@ from unittest.mock import MagicMock
 from fastapi.testclient import TestClient
 
 from app.agent.schemas import AnaliseEstruturada
+from app.tools.notificacao import NotificacaoResultado
 from app.tools.schemas import CENARIOS_VALIDOS
 from app.web.main import app
 
@@ -125,3 +126,42 @@ def test_analisar_com_pergunta_vazia_retorna_alertas_preenchido():
     assert resposta.status_code == 200
     assert corpo["alertas"]
     assert corpo["cenario_identificado"] is None
+
+
+def test_aprovar_sem_aprovacao_pendente_retorna_400():
+    resposta = cliente.post(
+        "/api/aprovar", json={"session_id": "sessao-sem-aprovacao-pendente"}
+    )
+
+    assert resposta.status_code == 400
+
+
+def test_aprovar_com_aprovacao_pendente_dispara_notificacao(monkeypatch):
+    _mockar_llm(monkeypatch, [_ANALISE_VALIDA])
+
+    resposta_analisar = cliente.post(
+        "/api/analisar",
+        json={"pergunta": "Como calcular o IBS e a CBS na venda?"},
+    )
+    session_id = resposta_analisar.json()["session_id"]
+    assert resposta_analisar.json()["aguardando_aprovacao_humana"] is True
+
+    mock_notificacao = MagicMock(
+        return_value=NotificacaoResultado(
+            status="notificacao_registrada", mensagem="notificacao de teste"
+        )
+    )
+    monkeypatch.setattr("app.web.main.disparar_notificacao", mock_notificacao)
+
+    resposta_aprovar = cliente.post("/api/aprovar", json={"session_id": session_id})
+
+    assert resposta_aprovar.status_code == 200
+    assert resposta_aprovar.json() == {
+        "status": "notificacao_enviada",
+        "mensagem": "notificacao de teste",
+    }
+
+    mock_notificacao.assert_called_once()
+    payload_chamado = mock_notificacao.call_args.args[0]
+    assert payload_chamado.session_id == session_id
+    assert payload_chamado.cenario == "calculo_impostos"

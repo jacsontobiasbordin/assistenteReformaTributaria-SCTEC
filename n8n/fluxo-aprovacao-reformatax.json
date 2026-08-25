@@ -1,0 +1,97 @@
+{
+  "name": "ReformaTax - Aprovacao Humana",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "reformatax-aprovacao",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "2cb1296a-8a96-4c7e-8a07-9b2078c411d6",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -208,
+        0
+      ],
+      "webhookId": "2dc0e535-1488-4b9d-9215-6969cd73992d"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b9d693f6-05fd-47df-8eaa-85d7b94aedfd",
+              "name": "mensagem",
+              "type": "string",
+              "value": "=[ReformaTax] Analise aprovada - cenario: {{ $json.body.cenario }} - sessao: {{ $json.body.session_id }} - resumo: {{ $json.body.resumo }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0449b8b0-6dfa-43d5-8e13-fab06f067d00",
+      "name": "Montar mensagem",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        48,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"status\": \"notificacao_registrada\", \"mensagem\": $json.mensagem } }}",
+        "options": {}
+      },
+      "id": "ef607fd4-d3f4-4cdb-8bcc-26a88c013306",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        288,
+        0
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Montar mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Montar mensagem": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "b4d2a578-0544-4b28-b18d-206cd167f40c",
+  "meta": {
+    "instanceId": "d4aec1ead7e2addf66eced4b35f7ac64a67d08a86c5118ba7682bfdbba0d5254"
+  },
+  "nodeGroups": [],
+  "id": "uag78G9YHDmPr6FL",
+  "tags": []
+}

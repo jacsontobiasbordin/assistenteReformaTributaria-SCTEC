@@ -17,3 +17,12 @@ class AnaliseResponse(BaseModel):
     resposta_estruturada: dict | None
     alertas: list[str]
     aguardando_aprovacao_humana: bool
+
+
+class AprovarRequest(BaseModel):
+    session_id: str
+
+
+class AprovarResponse(BaseModel):
+    status: str
+    mensagem: str

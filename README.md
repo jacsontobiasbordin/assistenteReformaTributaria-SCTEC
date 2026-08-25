@@ -191,6 +191,66 @@ O refinamento da triagem de segurança (da versão simples da Etapa 5 para
 a versão atual) está documentado como ciclo de refinamento em
 [docs/qa/refinamento-seguranca.md](docs/qa/refinamento-seguranca.md).
 
+## Automação low-code (n8n)
+
+Fecha o requisito 4.9: o portão de aprovação humana (`solicitar_aprovacao_humana`,
+acima) agora dispara uma automação **low-code/no-code** real quando um
+humano aprova uma análise de cálculo de impostos. A lógica de negócio
+inteira continua na aplicação Python — o n8n só recebe um webhook e
+produz uma saída observável (registro na aba "Executions" + resposta
+HTTP); nenhuma decisão de roteamento, segurança ou aprovação é feita
+pela ferramenta visual.
+
+**Subir o ambiente local:**
+
+```bash
+cd n8n
+cp ../.env.example .env   # preencha N8N_BASIC_AUTH_USER/PASSWORD locais
+docker compose up -d
+```
+
+Acesse [http://localhost:5678](http://localhost:5678) e crie a conta
+local (basic auth já configurado pelo `docker-compose.yml`).
+
+**Importar o fluxo já exportado**, numa instância nova do n8n: menu
+(⋯) → **Import from File** → selecione
+[n8n/fluxo-aprovacao-reformatax.json](n8n/fluxo-aprovacao-reformatax.json)
+→ **Activate** o fluxo (toggle no canto superior direito). O fluxo tem
+3 nodes: **Webhook** (trigger, `POST /reformatax-aprovacao`) → **Edit
+Fields** (monta a mensagem a partir de `cenario`, `resumo`,
+`session_id`) → **Respond to Webhook** (retorna
+`{"status": "notificacao_registrada", "mensagem": "..."}`). Nenhuma
+credencial é exportada no JSON (confirmado manualmente).
+
+**Configurar a aplicação Python** — no `.env` principal do projeto
+(raiz, não o `n8n/.env`):
+
+```bash
+N8N_WEBHOOK_URL=http://localhost:5678/webhook/reformatax-aprovacao
+N8N_TIMEOUT_SECONDS=10
+```
+
+**Fluxo ponta a ponta:** pergunta de cálculo de impostos → resposta
+com `aguardando_aprovacao_humana: true` → clique em **"Aprovar e
+notificar"** no banner de aviso → `POST /api/aprovar` (app/web/main.py,
+determinístico, não chama `get_llm()` nem reexecuta o grafo) →
+`app/tools/notificacao.py::disparar_notificacao` chama o webhook do
+n8n → registro observável na aba "Executions" do n8n.
+
+![Tela da interface web mostrando a notificação enviada ao n8n após aprovação humana de uma análise de cálculo de impostos](docs/apresentacao/tela-aprovacao-n8n.png)
+
+Se a notificação falhar (timeout, n8n fora do ar), a API retorna 502
+com mensagem amigável — a aprovação em si **não é desfeita**, só a
+notificação falha (fallback documentado em
+`app/tools/notificacao.py::NotificacaoFalhouError`). Os testes
+automatizados (`tests/test_notificacao.py`, `tests/test_web.py`) mockam
+`httpx`/a tool de notificação e passam **sem o n8n rodando**.
+
+> **Extensão opcional (ChatOps):** para ir além do registro simples,
+> troque/adicione um node de envio real para Discord/Slack/e-mail antes
+> do "Respond to Webhook", configurando a credencial pela própria
+> interface do n8n — nunca no JSON exportado nem no repositório.
+
 ## Instalação e execução
 
 1. Crie e ative um ambiente virtual:

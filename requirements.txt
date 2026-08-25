@@ -10,6 +10,7 @@ pydantic
 pydantic-settings
 fastapi
 uvicorn
+httpx
 pytest
 pytest-cov
 ruff

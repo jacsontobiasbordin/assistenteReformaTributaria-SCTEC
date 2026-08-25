@@ -10,6 +10,8 @@
 
   const bannerAprovacao = document.getElementById("banner-aprovacao");
   const textoBannerAprovacao = document.getElementById("texto-banner-aprovacao");
+  const btnAprovar = document.getElementById("btn-aprovar");
+  const resultadoAprovacao = document.getElementById("resultado-aprovacao");
   const bannerAlerta = document.getElementById("banner-alerta");
   const listaBannerAlerta = document.getElementById("lista-banner-alerta");
 
@@ -79,6 +81,8 @@
       textoBannerAprovacao.textContent =
         (dados.resposta_estruturada && dados.resposta_estruturada.aviso_aprovacao) ||
         "Esta análise requer aprovação humana antes de qualquer ação externa.";
+      btnAprovar.disabled = false;
+      resultadoAprovacao.textContent = "";
       bannerAprovacao.hidden = false;
     }
 
@@ -162,6 +166,30 @@
   }
 
   btnAnalisar.addEventListener("click", analisar);
+
+  btnAprovar.addEventListener("click", async () => {
+    btnAprovar.disabled = true;
+    resultadoAprovacao.textContent = "Enviando...";
+
+    try {
+      const resposta = await fetch("/api/aprovar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ session_id: sessionId }),
+      });
+      const dados = await resposta.json();
+
+      if (!resposta.ok) {
+        throw new Error(dados.detail || "Falha ao notificar.");
+      }
+
+      resultadoAprovacao.textContent = "✓ " + dados.mensagem;
+    } catch (erro) {
+      resultadoAprovacao.textContent =
+        "✗ " + (erro.message || "Erro inesperado ao notificar.");
+      btnAprovar.disabled = false;
+    }
+  });
 
   btnCopiar.addEventListener("click", async () => {
     try {

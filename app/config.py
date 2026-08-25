@@ -26,6 +26,12 @@ class Settings(BaseSettings):
     # fallback de app/agent/nodes.py::responder_erro_geracao).
     llm_timeout_seconds: int = 30
 
+    # Webhook do fluxo n8n local (Etapa 12, requisito 4.9), chamado por
+    # app/tools/notificacao.py apos aprovacao humana. Diferente das
+    # credenciais de basic auth do n8n (n8n/.env, nao usadas aqui).
+    n8n_webhook_url: str = "http://localhost:5678/webhook/reformatax-aprovacao"
+    n8n_timeout_seconds: int = 10
+
     @model_validator(mode="after")
     def _validar_api_key_do_provedor_ativo(self) -> "Settings":
         chave_por_provedor = {

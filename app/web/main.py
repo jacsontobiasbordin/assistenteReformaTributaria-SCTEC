@@ -17,7 +17,17 @@ from fastapi.staticfiles import StaticFiles
 from app.agent.graph import build_graph, thread_config
 from app.observability.logging_config import configurar_logging
 from app.tools.local_kb import listar_cenarios_disponiveis
-from app.web.schemas import AnaliseResponse, PerguntaRequest
+from app.tools.notificacao import (
+    NotificacaoFalhouError,
+    NotificacaoInput,
+    disparar_notificacao,
+)
+from app.web.schemas import (
+    AnaliseResponse,
+    AprovarRequest,
+    AprovarResponse,
+    PerguntaRequest,
+)
 
 configurar_logging()
 logger = logging.getLogger("reformatax")
@@ -83,6 +93,42 @@ def analisar(payload: PerguntaRequest) -> AnaliseResponse:
         alertas=resultado.get("alertas", []),
         aguardando_aprovacao_humana=resultado.get("aguardando_aprovacao_humana", False),
     )
+
+
+@app.post("/api/aprovar", response_model=AprovarResponse)
+def aprovar(payload: AprovarRequest) -> AprovarResponse:
+    """Dispara a notificacao do n8n apos aprovacao humana (Etapa 7).
+
+    Rota deterministica e simples: NAO chama get_llm() nem reexecuta o
+    grafo — so le o estado ja calculado da sessao e, se houver
+    aprovacao pendente, aciona a ferramenta visual (n8n) como apoio a
+    orquestracao. A logica principal continua na aplicacao.
+    """
+    estado = get_graph().get_state(thread_config(payload.session_id)).values
+
+    if not estado.get("aguardando_aprovacao_humana"):
+        raise HTTPException(
+            status_code=400,
+            detail="Nao ha aprovacao pendente para esta sessao.",
+        )
+
+    resposta_estruturada = estado.get("resposta_estruturada") or {}
+    notificacao_input = NotificacaoInput(
+        cenario=estado.get("cenario_identificado") or "",
+        resumo=resposta_estruturada.get("cenario_analisado", ""),
+        session_id=payload.session_id,
+    )
+
+    try:
+        resultado = disparar_notificacao(notificacao_input)
+    except NotificacaoFalhouError as erro:
+        logger.exception(
+            "Falha ao notificar o n8n apos aprovacao humana.",
+            extra={"session_id": payload.session_id},
+        )
+        raise HTTPException(status_code=502, detail=str(erro)) from None
+
+    return AprovarResponse(status="notificacao_enviada", mensagem=resultado.mensagem)
 
 
 # Montado por ultimo, depois de todas as rotas /api/*, para nao

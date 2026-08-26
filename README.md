@@ -2,7 +2,19 @@
 
 Assistente baseado em agentes para apoiar consultas sobre a Reforma Tributária brasileira.
 
-## Status: em desenvolvimento — estrutura inicial
+## Sumário
+
+- [Descrição da solução](#descrição-da-solução)
+- [Classificação e arquitetura](#classificação-e-arquitetura)
+- [Tool e integração](#tool-e-integração)
+- [Contexto e memória](#contexto-e-memória)
+- [Segurança e autonomia](#segurança-e-autonomia)
+- [Instalação e execução](#instalação-e-execução)
+- [QA, observabilidade e DevOps](#qa-observabilidade-e-devops)
+- [Automação low-code (n8n)](#automação-low-code-n8n)
+- [Cenários de uso](#cenários-de-uso)
+- [Análise crítica e limitações](#análise-crítica-e-limitações)
+- [Prompts, modelo e refinamento](#prompts-modelo-e-refinamento)
 
 ## Descrição da solução
 
@@ -51,9 +63,8 @@ suportados são bem definidos. Ver detalhamento completo em
 
 ### Diagrama de arquitetura
 
-O diagrama abaixo representa o fluxo completo planejado para o projeto
-(ainda não implementado nesta etapa — a implementação ocorre nas Etapas 2
-a 12):
+O diagrama abaixo representa o grafo completo, implementado de ponta a
+ponta (núcleo na Etapa 4; segurança e portão de aprovação na Etapa 7):
 
 ```mermaid
 flowchart TD
@@ -62,38 +73,35 @@ flowchart TD
     B -->|fora de escopo| Z2[responder_fora_de_escopo] --> END2[FIM]
     B -->|cenario valido| C[consultar_base_local]
     B -->|cenario valido| D[triagem_seguranca]
-    C --> E[gerar_analise]
+    C --> E[avaliar_seguranca]
     D --> E
-    E --> F[validar_resposta]
-    F -->|invalida, tentativas < limite| E
-    F -->|invalida, limite atingido| Z3[responder_erro_geracao] --> END3[FIM]
-    F -->|valida, sem risco| END4[FIM: resposta ao usuario]
-    F -->|valida, risco/acao sensivel| G[solicitar_aprovacao_humana]
-    G -->|aprovado| H[disparar_notificacao_low_code] --> END5[FIM]
-    G -->|nao aprovado/pendente| END6[FIM: resposta com alerta pendente]
+    E -->|risco detectado| Z3[bloquear_acao_insegura] --> END3[FIM]
+    E -->|sem risco| F[gerar_analise]
+    F --> G[validar_resposta]
+    G -->|invalida, tentativas < limite| F
+    G -->|invalida, limite atingido| Z4[responder_erro_geracao] --> END4[FIM]
+    G -->|valida, calculo_impostos| H[solicitar_aprovacao_humana] --> I[registrar_historico] --> END5[FIM]
+    G -->|valida, demais cenarios| I
 ```
 
-A partir da Etapa 4, o núcleo determinístico deste diagrama já está
-implementado em código: o estado compartilhado tipado está em
-[app/agent/state.py](app/agent/state.py) (`AgentState`), os nodes
-`validar_entrada`, `identificar_cenario`, `consultar_base_local`,
-`responder_entrada_invalida` e `responder_fora_de_escopo` estão em
-[app/agent/nodes.py](app/agent/nodes.py), e a montagem do grafo (nodes,
-entry point e arestas condicionais) está em
-[app/agent/graph.py](app/agent/graph.py) (`build_graph()`). Por ora, o
-grafo termina em `consultar_base_local`; os demais nodes do diagrama
-(`triagem_seguranca`, `gerar_analise`, `validar_resposta`,
-`solicitar_aprovacao_humana`, `disparar_notificacao_low_code`) entram
-nas próximas etapas.
+O estado compartilhado tipado está em
+[app/agent/state.py](app/agent/state.py) (`AgentState`); todos os nodes
+do diagrama estão em [app/agent/nodes.py](app/agent/nodes.py); a
+montagem do grafo (nodes, entry point e arestas condicionais, incluindo
+o fan-out/fan-in de `consultar_base_local` + `triagem_seguranca`) está
+em [app/agent/graph.py](app/agent/graph.py) (`build_graph()`). O
+disparo real da notificação (`POST /api/confirmar-notificacao`) **não**
+é um node do grafo — é uma rota HTTP separada e determinística
+(`app/web/main.py`) que só lê o estado já calculado da sessão; ver
+[Automação low-code (n8n)](#automação-low-code-n8n).
 
-Todos os nodes implementados até aqui são **100% determinísticos**
-(regras da aplicação, sem LLM). O único node agêntico de todo o projeto
-é `gerar_analise` (introduzido na Etapa 5), que usa o LLM apenas para
+Todos os nodes do grafo são **100% determinísticos** (regras da
+aplicação, sem LLM), com exceção de um único node agêntico:
+`gerar_analise` (introduzido na Etapa 5), que usa o LLM apenas para
 sintetizar a resposta final a partir do contexto já recuperado — nunca
 para decidir roteamento, autonomia ou execução de ferramentas.
 
-A partir da Etapa 5, o grafo cumpre todos os requisitos de arquitetura
-agêntica exigidos:
+O grafo cumpre todos os requisitos de arquitetura agêntica exigidos:
 
 - **Execução sequencial** ✓ — `validar_entrada → identificar_cenario → … → validar_resposta`;
 - **Ramificação condicional** ✓ — entrada inválida, fora de escopo e o
@@ -106,8 +114,53 @@ agêntica exigidos:
   esgotado o limite, o grafo encerra em `responder_erro_geracao`;
 - **Separação decisão do modelo / regra determinística** ✓ — apenas
   `gerar_analise` usa o LLM (via `get_llm()`); a triagem de segurança
-  desta etapa é uma detecção inicial simples por padrões de texto, sem
-  LLM, que será refinada na Etapa 7.
+  (`triagem_seguranca`) é 100% determinística, por padrões de texto,
+  sem LLM (refinada da versão inicial da Etapa 5 para a atual na
+  Etapa 7 — ver [docs/qa/refinamento-seguranca.md](docs/qa/refinamento-seguranca.md)).
+
+## Tool e integração
+
+A primeira ferramenta (tool) do agente é a **consulta à base local de
+conhecimento** (`app/tools/local_kb.py`), que lê
+[data/reforma_tributaria_erp.json](data/reforma_tributaria_erp.json) e
+retorna a análise correspondente a um dos três cenários suportados
+(cadastro de produtos, emissão de nota fiscal, cálculo de IBS/CBS).
+
+Ela conta como integração por **serviço/backend interno** — não é uma API
+externa nem um servidor MCP nesta etapa: é uma função Python com contrato
+de entrada e saída explícito, validado por schema, que futuramente será
+chamada por um nó do grafo do LangGraph.
+
+**Schema de entrada** — `ConsultaCenarioInput` (`app/tools/schemas.py`):
+um único campo `cenario: str`, validado por um `field_validator` do
+pydantic que só aceita `cadastro_produtos`, `emissao_nota_fiscal` ou
+`calculo_impostos`. Qualquer outro valor é rejeitado antes de a tool
+sequer ser executada, com uma mensagem de erro listando os valores
+aceitos.
+
+**Schema de saída** — `RespostaCenarioLocal` (`app/tools/schemas.py`):
+espelha a estrutura de cada cenário no JSON, com os campos `resumo`,
+`pontos_reforma_relacionados`, `impactos_tecnicos_erp`,
+`pontos_atencao` e `checklist_tecnico`.
+
+**Validação e tratamento de falhas:**
+- a validação de parâmetro acontece na própria construção de
+  `ConsultaCenarioInput` — um `cenario` inválido nunca chega à lógica de
+  negócio da tool;
+- `CenarioNaoEncontradoError` é lançada como defesa extra, caso o cenário
+  esteja ausente da base local carregada (mesmo já validado pelo schema);
+- `BaseLocalIndisponivelError` é lançada quando o arquivo JSON não existe
+  ou está corrompido (`FileNotFoundError`/`json.JSONDecodeError`
+  capturadas e relançadas com `raise ... from e`), evitando que um
+  traceback bruto vaze para quem consome a tool;
+- o caminho do arquivo é resolvido de forma fixa dentro de `data/`, nunca
+  recebido como parâmetro externo — evitando leitura de arquivos fora
+  dessa pasta.
+
+> **Nota:** esta tool é **somente leitura** e não executa nenhuma ação
+> destrutiva, irreversível ou externa. O controle de ação sensível —
+> que exige aprovação humana antes de disparar uma notificação — é
+> implementado nas Etapas 7 e 12, sobre uma ferramenta diferente desta.
 
 ## Contexto e memória
 
@@ -197,67 +250,6 @@ O refinamento da triagem de segurança (da versão simples da Etapa 5 para
 a versão atual) está documentado como ciclo de refinamento em
 [docs/qa/refinamento-seguranca.md](docs/qa/refinamento-seguranca.md).
 
-## Automação low-code (n8n)
-
-Fecha o requisito 4.9: o portão de aprovação humana (`solicitar_aprovacao_humana`,
-acima) agora dispara uma automação **low-code/no-code** real quando um
-humano aprova uma análise de cálculo de impostos. A lógica de negócio
-inteira continua na aplicação Python — o n8n só recebe um webhook e
-produz uma saída observável (registro na aba "Executions" + resposta
-HTTP); nenhuma decisão de roteamento, segurança ou aprovação é feita
-pela ferramenta visual.
-
-**Subir o ambiente local:**
-
-```bash
-cd n8n
-cp ../.env.example .env   # preencha N8N_BASIC_AUTH_USER/PASSWORD locais
-docker compose up -d
-```
-
-Acesse [http://localhost:5678](http://localhost:5678) e crie a conta
-local (basic auth já configurado pelo `docker-compose.yml`).
-
-**Importar o fluxo já exportado**, numa instância nova do n8n: menu
-(⋯) → **Import from File** → selecione
-[n8n/fluxo-confirmacao-reformatax.json](n8n/fluxo-confirmacao-reformatax.json)
-→ **Activate** o fluxo (toggle no canto superior direito). O fluxo tem
-3 nodes: **Webhook** (trigger, `POST /reformatax-confirmacao`) → **Edit
-Fields** (monta a mensagem a partir de `cenario`, `resumo`,
-`session_id`) → **Respond to Webhook** (retorna
-`{"status": "notificacao_registrada", "mensagem": "..."}`). Nenhuma
-credencial é exportada no JSON (confirmado manualmente).
-
-**Configurar a aplicação Python** — no `.env` principal do projeto
-(raiz, não o `n8n/.env`):
-
-```bash
-N8N_WEBHOOK_URL=http://localhost:5678/webhook/reformatax-confirmacao
-N8N_TIMEOUT_SECONDS=10
-```
-
-**Fluxo ponta a ponta:** pergunta de cálculo de impostos → resposta
-com `aguardando_aprovacao_humana: true` → clique em **"Confirmar e
-notificar a área fiscal"** no banner de aviso → `POST
-/api/confirmar-notificacao` (app/web/main.py, determinístico, não
-chama `get_llm()` nem reexecuta o grafo) →
-`app/tools/notificacao.py::disparar_notificacao` chama o webhook do
-n8n → registro observável na aba "Executions" do n8n.
-
-![Tela da interface web mostrando a notificação enviada ao n8n após aprovação humana de uma análise de cálculo de impostos](docs/apresentacao/tela-aprovacao-n8n.png)
-
-Se a notificação falhar (timeout, n8n fora do ar), a API retorna 502
-com mensagem amigável — a aprovação em si **não é desfeita**, só a
-notificação falha (fallback documentado em
-`app/tools/notificacao.py::NotificacaoFalhouError`). Os testes
-automatizados (`tests/test_notificacao.py`, `tests/test_web.py`) mockam
-`httpx`/a tool de notificação e passam **sem o n8n rodando**.
-
-> **Extensão opcional (ChatOps):** para ir além do registro simples,
-> troque/adicione um node de envio real para Discord/Slack/e-mail antes
-> do "Respond to Webhook", configurando a credencial pela própria
-> interface do n8n — nunca no JSON exportado nem no repositório.
-
 ## Instalação e execução
 
 1. Crie e ative um ambiente virtual:
@@ -343,50 +335,6 @@ custo-benefício. Para trocar de provedor, altere `LLM_PROVIDER` no `.env`
 e preencha a API key correspondente — nenhum código precisa ser alterado,
 pois toda a lógica de seleção do client fica centralizada em
 `app/llm/factory.py`.
-
-## Tool e integração
-
-A primeira ferramenta (tool) do agente é a **consulta à base local de
-conhecimento** (`app/tools/local_kb.py`), que lê
-[data/reforma_tributaria_erp.json](data/reforma_tributaria_erp.json) e
-retorna a análise correspondente a um dos três cenários suportados
-(cadastro de produtos, emissão de nota fiscal, cálculo de IBS/CBS).
-
-Ela conta como integração por **serviço/backend interno** — não é uma API
-externa nem um servidor MCP nesta etapa: é uma função Python com contrato
-de entrada e saída explícito, validado por schema, que futuramente será
-chamada por um nó do grafo do LangGraph.
-
-**Schema de entrada** — `ConsultaCenarioInput` (`app/tools/schemas.py`):
-um único campo `cenario: str`, validado por um `field_validator` do
-pydantic que só aceita `cadastro_produtos`, `emissao_nota_fiscal` ou
-`calculo_impostos`. Qualquer outro valor é rejeitado antes de a tool
-sequer ser executada, com uma mensagem de erro listando os valores
-aceitos.
-
-**Schema de saída** — `RespostaCenarioLocal` (`app/tools/schemas.py`):
-espelha a estrutura de cada cenário no JSON, com os campos `resumo`,
-`pontos_reforma_relacionados`, `impactos_tecnicos_erp`,
-`pontos_atencao` e `checklist_tecnico`.
-
-**Validação e tratamento de falhas:**
-- a validação de parâmetro acontece na própria construção de
-  `ConsultaCenarioInput` — um `cenario` inválido nunca chega à lógica de
-  negócio da tool;
-- `CenarioNaoEncontradoError` é lançada como defesa extra, caso o cenário
-  esteja ausente da base local carregada (mesmo já validado pelo schema);
-- `BaseLocalIndisponivelError` é lançada quando o arquivo JSON não existe
-  ou está corrompido (`FileNotFoundError`/`json.JSONDecodeError`
-  capturadas e relançadas com `raise ... from e`), evitando que um
-  traceback bruto vaze para quem consome a tool;
-- o caminho do arquivo é resolvido de forma fixa dentro de `data/`, nunca
-  recebido como parâmetro externo — evitando leitura de arquivos fora
-  dessa pasta.
-
-> **Nota:** esta tool é **somente leitura** e não executa nenhuma ação
-> destrutiva, irreversível ou externa. O controle de ação sensível —
-> que exige aprovação humana antes de disparar uma notificação — é
-> implementado nas Etapas 7 e 12, sobre uma ferramenta diferente desta.
 
 ## QA, observabilidade e DevOps
 
@@ -477,6 +425,67 @@ python -c "from app.web.main import app; print('OK: aplicacao importada com suce
   > (`scripts/gerar_dados_simulados.py`), não produção real — o projeto
   > ainda não tem uso real em produção, conforme permitido e exigido
   > (documentado como tal) pelo requisito 4.8.
+
+## Automação low-code (n8n)
+
+Fecha o requisito 4.9: o portão de aprovação humana (`solicitar_aprovacao_humana`,
+acima) agora dispara uma automação **low-code/no-code** real quando um
+humano aprova uma análise de cálculo de impostos. A lógica de negócio
+inteira continua na aplicação Python — o n8n só recebe um webhook e
+produz uma saída observável (registro na aba "Executions" + resposta
+HTTP); nenhuma decisão de roteamento, segurança ou aprovação é feita
+pela ferramenta visual.
+
+**Subir o ambiente local:**
+
+```bash
+cd n8n
+cp ../.env.example .env   # preencha N8N_BASIC_AUTH_USER/PASSWORD locais
+docker compose up -d
+```
+
+Acesse [http://localhost:5678](http://localhost:5678) e crie a conta
+local (basic auth já configurado pelo `docker-compose.yml`).
+
+**Importar o fluxo já exportado**, numa instância nova do n8n: menu
+(⋯) → **Import from File** → selecione
+[n8n/fluxo-confirmacao-reformatax.json](n8n/fluxo-confirmacao-reformatax.json)
+→ **Activate** o fluxo (toggle no canto superior direito). O fluxo tem
+3 nodes: **Webhook** (trigger, `POST /reformatax-confirmacao`) → **Edit
+Fields** (monta a mensagem a partir de `cenario`, `resumo`,
+`session_id`) → **Respond to Webhook** (retorna
+`{"status": "notificacao_registrada", "mensagem": "..."}`). Nenhuma
+credencial é exportada no JSON (confirmado manualmente).
+
+**Configurar a aplicação Python** — no `.env` principal do projeto
+(raiz, não o `n8n/.env`):
+
+```bash
+N8N_WEBHOOK_URL=http://localhost:5678/webhook/reformatax-confirmacao
+N8N_TIMEOUT_SECONDS=10
+```
+
+**Fluxo ponta a ponta:** pergunta de cálculo de impostos → resposta
+com `aguardando_aprovacao_humana: true` → clique em **"Confirmar e
+notificar a área fiscal"** no banner de aviso → `POST
+/api/confirmar-notificacao` (app/web/main.py, determinístico, não
+chama `get_llm()` nem reexecuta o grafo) →
+`app/tools/notificacao.py::disparar_notificacao` chama o webhook do
+n8n → registro observável na aba "Executions" do n8n.
+
+![Tela da interface web mostrando a notificação enviada ao n8n após confirmação humana de uma análise de cálculo de impostos](docs/apresentacao/tela-aprovacao-n8n.png)
+
+Se a notificação falhar (timeout, n8n fora do ar), a API retorna 502
+com mensagem amigável — a confirmação em si **não é desfeita**, só a
+notificação falha (fallback documentado em
+`app/tools/notificacao.py::NotificacaoFalhouError`). Os testes
+automatizados (`tests/test_notificacao.py`, `tests/test_web.py`) mockam
+`httpx`/a tool de notificação e passam **sem o n8n rodando**.
+
+> **Extensão opcional (ChatOps):** para ir além do registro simples,
+> troque/adicione um node de envio real para Discord/Slack/e-mail antes
+> do "Respond to Webhook", configurando a credencial pela própria
+> interface do n8n — nunca no JSON exportado nem no repositório.
 
 ## Prompts, modelo e refinamento
 

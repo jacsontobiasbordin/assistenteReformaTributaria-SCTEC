@@ -1,10 +1,10 @@
 {
-  "name": "ReformaTax - Aprovacao Humana",
+  "name": "ReformaTax - Confirmacao Notificacao",
   "nodes": [
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "reformatax-aprovacao",
+        "path": "reformatax-confirmacao",
         "responseMode": "responseNode",
         "options": {}
       },
@@ -13,20 +13,21 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        -208,
+        -200,
         0
       ],
       "webhookId": "2dc0e535-1488-4b9d-9215-6969cd73992d"
     },
     {
       "parameters": {
+        "mode": "manual",
         "assignments": {
           "assignments": [
             {
               "id": "b9d693f6-05fd-47df-8eaa-85d7b94aedfd",
               "name": "mensagem",
               "type": "string",
-              "value": "=[ReformaTax] Analise aprovada - cenario: {{ $json.body.cenario }} - sessao: {{ $json.body.session_id }} - resumo: {{ $json.body.resumo }}"
+              "value": "=[ReformaTax] Notificacao confirmada pelo usuario - cenario: {{ $json.body.cenario }} - sessao: {{ $json.body.session_id }} - resumo: {{ $json.body.resumo }}"
             }
           ]
         },
@@ -37,7 +38,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        48,
+        40,
         0
       ]
     },
@@ -52,7 +53,7 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
       "position": [
-        288,
+        280,
         0
       ]
     }
@@ -84,10 +85,9 @@
   },
   "active": true,
   "settings": {
-    "executionOrder": "v1",
-    "binaryMode": "separate"
+    "executionOrder": "v1"
   },
-  "versionId": "b4d2a578-0544-4b28-b18d-206cd167f40c",
+  "versionId": "877600da-e779-4d43-94d0-cd8543b4cc4e",
   "meta": {
     "instanceId": "d4aec1ead7e2addf66eced4b35f7ac64a67d08a86c5118ba7682bfdbba0d5254"
   },

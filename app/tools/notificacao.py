@@ -1,6 +1,6 @@
 """Tool de disparo de notificacao apos aprovacao humana (Etapa 7).
 
-Chama o webhook do fluxo n8n local (n8n/fluxo-aprovacao-reformatax.json)
+Chama o webhook do fluxo n8n local (n8n/fluxo-confirmacao-reformatax.json)
 depois que um humano aprova uma analise pendente (cenario de calculo de
 impostos). A logica de negocio (o que aprovar, quando aprovar) continua
 inteiramente na aplicacao Python — o n8n so recebe o payload via webhook

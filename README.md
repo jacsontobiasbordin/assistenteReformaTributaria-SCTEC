@@ -664,6 +664,53 @@ A mensagem confirma que a notificação chegou ao webhook do n8n local e
 foi registrada na aba "Executions" (ver
 [Automação low-code (n8n)](#automação-low-code-n8n)).
 
+## Análise crítica e limitações
+
+Limitações já assumidas ao longo do projeto, consolidadas num só lugar
+(nenhuma delas é nova — cada uma foi documentada na etapa em que surgiu):
+
+- **Identificação de cenário por palavras-chave, não por LLM**
+  (`identificar_cenario`, `app/agent/nodes.py`): a classificação do
+  cenário é 100% determinística, por presença de palavras-chave na
+  pergunta — não usa o LLM nem embeddings. Rápido, previsível e barato,
+  mas frágil a perguntas que descrevem o cenário sem usar nenhuma das
+  palavras-chave esperadas (nesse caso, cai em `fora_de_escopo`).
+- **Base de conhecimento fixa, sem RAG/busca semântica**
+  (`app/tools/local_kb.py`,
+  [data/reforma_tributaria_erp.json](data/reforma_tributaria_erp.json)):
+  cobre exatamente os três cenários suportados. Não há indexação
+  vetorial nem busca semântica — adicionar um quarto cenário exige
+  editar o JSON e o dicionário de palavras-chave, não apenas
+  "alimentar mais documentos".
+- **Memória de sessão em processo, não persistente** (Etapa 6): o
+  `MemorySaver` do LangGraph guarda o histórico da conversa em memória
+  do processo Python — reiniciar a aplicação apaga todas as sessões em
+  andamento. Suficiente para o escopo de uma consulta técnica pontual,
+  insuficiente para um histórico que precise sobreviver a deploys.
+- **Confirmação sem papel de revisor distinto** (Etapa 12.1 — ver
+  [docs/qa/refinamento-confirmacao-vs-aprovacao.md](docs/qa/refinamento-confirmacao-vs-aprovacao.md)):
+  o mesmo usuário que formula a pergunta é quem confirma o envio da
+  notificação, porque o projeto não implementa autenticação
+  multiusuário. Não existe, nesta versão, um segundo usuário que revise
+  a análise antes do envio.
+- **Fluxo do n8n minimalista** (Etapa 12): o fluxo importado só
+  registra a notificação (aba "Executions") e responde com um JSON de
+  confirmação — não há, por padrão, um canal de chat real (Slack,
+  Discord, e-mail) configurado; ver a extensão opcional documentada em
+  [Automação low-code (n8n)](#automação-low-code-n8n).
+- **Dados de anomalia/risco simulados** (Etapa 11 —
+  [docs/qa/analise-anomalia-e-risco.md](docs/qa/analise-anomalia-e-risco.md)):
+  gerados por `scripts/gerar_dados_simulados.py`, não refletem uso real
+  em produção — o projeto ainda não teve esse uso, conforme permitido e
+  documentado como tal pelo requisito 4.8.
+
+**Ciclos de refinamento:** duas decisões do projeto (uma delas a
+limitação de confirmação acima) já passaram por um ciclo formal de
+problema → alteração → resultado, documentado em
+[docs/qa/ciclos-de-refinamento.md](docs/qa/ciclos-de-refinamento.md).
+
+**Vídeo de demonstração:** [a adicionar na Etapa 15].
+
 ## Prompts, modelo e refinamento
 
 > Esta seção fecha o requisito 4.10: prompt de sistema documentado,

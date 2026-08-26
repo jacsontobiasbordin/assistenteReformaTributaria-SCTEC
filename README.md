@@ -174,6 +174,12 @@ real (webhook/automação low-code) só é implementado na Etapa 12. Nesta
 etapa existe apenas o "portão": a decisão de agir de fato continua
 dependendo de um humano.
 
+**Limitação conhecida:** nesta versão, o mesmo usuário que formula a
+pergunta é quem confirma o envio da notificação — não há papel de
+revisor/aprovador distinto, pois o projeto não implementa autenticação
+multiusuário. Em um cenário de produção real, esse papel pertenceria a
+um analista fiscal ou gestor diferente do solicitante.
+
 **Limites de autonomia definidos:**
 - Uma ação **executa** automaticamente apenas quando é 100%
   determinística e reversível (ex.: consultar a base local, gerar a
@@ -214,9 +220,9 @@ local (basic auth já configurado pelo `docker-compose.yml`).
 
 **Importar o fluxo já exportado**, numa instância nova do n8n: menu
 (⋯) → **Import from File** → selecione
-[n8n/fluxo-aprovacao-reformatax.json](n8n/fluxo-aprovacao-reformatax.json)
+[n8n/fluxo-confirmacao-reformatax.json](n8n/fluxo-confirmacao-reformatax.json)
 → **Activate** o fluxo (toggle no canto superior direito). O fluxo tem
-3 nodes: **Webhook** (trigger, `POST /reformatax-aprovacao`) → **Edit
+3 nodes: **Webhook** (trigger, `POST /reformatax-confirmacao`) → **Edit
 Fields** (monta a mensagem a partir de `cenario`, `resumo`,
 `session_id`) → **Respond to Webhook** (retorna
 `{"status": "notificacao_registrada", "mensagem": "..."}`). Nenhuma
@@ -226,14 +232,15 @@ credencial é exportada no JSON (confirmado manualmente).
 (raiz, não o `n8n/.env`):
 
 ```bash
-N8N_WEBHOOK_URL=http://localhost:5678/webhook/reformatax-aprovacao
+N8N_WEBHOOK_URL=http://localhost:5678/webhook/reformatax-confirmacao
 N8N_TIMEOUT_SECONDS=10
 ```
 
 **Fluxo ponta a ponta:** pergunta de cálculo de impostos → resposta
-com `aguardando_aprovacao_humana: true` → clique em **"Aprovar e
-notificar"** no banner de aviso → `POST /api/aprovar` (app/web/main.py,
-determinístico, não chama `get_llm()` nem reexecuta o grafo) →
+com `aguardando_aprovacao_humana: true` → clique em **"Confirmar e
+notificar a área fiscal"** no banner de aviso → `POST
+/api/confirmar-notificacao` (app/web/main.py, determinístico, não
+chama `get_llm()` nem reexecuta o grafo) →
 `app/tools/notificacao.py::disparar_notificacao` chama o webhook do
 n8n → registro observável na aba "Executions" do n8n.
 

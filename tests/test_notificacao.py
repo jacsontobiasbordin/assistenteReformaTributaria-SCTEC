@@ -8,7 +8,7 @@ from app.tools.notificacao import (
     disparar_notificacao,
 )
 
-_URL_TESTE = "http://n8n-teste.local/webhook/reformatax-aprovacao"
+_URL_TESTE = "http://n8n-teste.local/webhook/reformatax-confirmacao"
 
 
 @pytest.fixture(autouse=True)

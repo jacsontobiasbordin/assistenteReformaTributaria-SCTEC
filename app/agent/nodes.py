@@ -272,9 +272,9 @@ def solicitar_aprovacao_humana(state: AgentState) -> dict:
     # aprovacao humana antes de qualquer notificacao externa.
     resposta = dict(state.get("resposta_estruturada") or {})
     resposta["aviso_aprovacao"] = (
-        "Esta analise envolve calculo de impostos e requer aprovacao "
-        "humana antes de qualquer notificacao externa ser disparada. "
-        "Nenhuma acao foi executada automaticamente."
+        "Esta analise envolve calculo de impostos. Confirme para "
+        "notificar a area fiscal responsavel; nenhuma notificacao e "
+        "enviada automaticamente."
     )
     return {"aguardando_aprovacao_humana": True, "resposta_estruturada": resposta}
 

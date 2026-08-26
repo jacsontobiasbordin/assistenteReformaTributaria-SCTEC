@@ -19,10 +19,10 @@ class AnaliseResponse(BaseModel):
     aguardando_aprovacao_humana: bool
 
 
-class AprovarRequest(BaseModel):
+class ConfirmarNotificacaoRequest(BaseModel):
     session_id: str
 
 
-class AprovarResponse(BaseModel):
+class ConfirmarNotificacaoResponse(BaseModel):
     status: str
     mensagem: str

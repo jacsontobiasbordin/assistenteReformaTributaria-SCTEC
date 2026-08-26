@@ -29,7 +29,7 @@ class Settings(BaseSettings):
     # Webhook do fluxo n8n local (Etapa 12, requisito 4.9), chamado por
     # app/tools/notificacao.py apos aprovacao humana. Diferente das
     # credenciais de basic auth do n8n (n8n/.env, nao usadas aqui).
-    n8n_webhook_url: str = "http://localhost:5678/webhook/reformatax-aprovacao"
+    n8n_webhook_url: str = "http://localhost:5678/webhook/reformatax-confirmacao"
     n8n_timeout_seconds: int = 10
 
     @model_validator(mode="after")

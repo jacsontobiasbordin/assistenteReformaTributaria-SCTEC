@@ -128,15 +128,15 @@ def test_analisar_com_pergunta_vazia_retorna_alertas_preenchido():
     assert corpo["cenario_identificado"] is None
 
 
-def test_aprovar_sem_aprovacao_pendente_retorna_400():
+def test_confirmar_notificacao_sem_confirmacao_pendente_retorna_400():
     resposta = cliente.post(
-        "/api/aprovar", json={"session_id": "sessao-sem-aprovacao-pendente"}
+        "/api/confirmar-notificacao", json={"session_id": "sessao-sem-confirmacao-pendente"}
     )
 
     assert resposta.status_code == 400
 
 
-def test_aprovar_com_aprovacao_pendente_dispara_notificacao(monkeypatch):
+def test_confirmar_notificacao_com_confirmacao_pendente_dispara_notificacao(monkeypatch):
     _mockar_llm(monkeypatch, [_ANALISE_VALIDA])
 
     resposta_analisar = cliente.post(
@@ -153,10 +153,12 @@ def test_aprovar_com_aprovacao_pendente_dispara_notificacao(monkeypatch):
     )
     monkeypatch.setattr("app.web.main.disparar_notificacao", mock_notificacao)
 
-    resposta_aprovar = cliente.post("/api/aprovar", json={"session_id": session_id})
+    resposta_confirmar = cliente.post(
+        "/api/confirmar-notificacao", json={"session_id": session_id}
+    )
 
-    assert resposta_aprovar.status_code == 200
-    assert resposta_aprovar.json() == {
+    assert resposta_confirmar.status_code == 200
+    assert resposta_confirmar.json() == {
         "status": "notificacao_enviada",
         "mensagem": "notificacao de teste",
     }

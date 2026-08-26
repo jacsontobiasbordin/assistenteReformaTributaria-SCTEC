@@ -25,6 +25,7 @@ realmente registrado no card do GitHub Projects.
 | [12](12-low-code-n8n.md) | Automação low-code/no-code (n8n) | feature/low-code | [#13](https://github.com/jacsontobiasbordin/assistenteReformaTributaria-SCTEC/issues/13) |
 | [12.1](12.1-refinamento-confirmacao.md) | Refinamento: confirmação em vez de aprovação de terceiro | fix/confirmacao-vs-aprovacao | [#33](https://github.com/jacsontobiasbordin/assistenteReformaTributaria-SCTEC/issues/33) |
 | [13](13-prompts-modelo-refinamento.md) | Prompts, modelo e ciclos de refinamento | docs/prompts-refinamento | [#14](https://github.com/jacsontobiasbordin/assistenteReformaTributaria-SCTEC/issues/14) |
+| [14](14-readme-final.md) | README.md final completo | docs/readme-video | [#15](https://github.com/jacsontobiasbordin/assistenteReformaTributaria-SCTEC/issues/15) |
 
 ## Documentos relacionados
 

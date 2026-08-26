@@ -477,3 +477,29 @@ python -c "from app.web.main import app; print('OK: aplicacao importada com suce
   > (`scripts/gerar_dados_simulados.py`), não produção real — o projeto
   > ainda não tem uso real em produção, conforme permitido e exigido
   > (documentado como tal) pelo requisito 4.8.
+
+## Prompts, modelo e refinamento
+
+> Esta seção fecha o requisito 4.10: prompt de sistema documentado,
+> índice de prompts usados, configuração do modelo por variável de
+> ambiente e ciclos de refinamento.
+
+- **Prompt de sistema do agente** (`SYSTEM_PROMPT_ANALISE`,
+  `app/agent/prompts.py`), documentado nas quatro categorias exigidas
+  (regras de comportamento, objetivos da tarefa, restrições importantes
+  e padrões de resposta esperados), com o texto integral da constante,
+  em [docs/prompts/system-prompt-agente.md](docs/prompts/system-prompt-agente.md).
+- **Índice completo dos prompts usados** no projeto (todas as etapas,
+  0 a 13, incluindo as duas etapas adicionais criadas dinamicamente
+  durante o desenvolvimento), com branch e issue de cada uma, em
+  [docs/prompts/README.md](docs/prompts/README.md).
+- **Configuração do modelo por variável de ambiente:** `app/config.py`
+  e `app/llm/factory.py` (Etapas 2 e 4) não têm nenhuma credencial
+  hardcoded — o provedor ativo (`LLM_PROVIDER`: `gemini`, `anthropic`
+  ou `openai`) e o modelo de cada provedor (`GEMINI_MODEL`,
+  `ANTHROPIC_MODEL`, `OPENAI_MODEL`) vêm exclusivamente de variáveis de
+  ambiente (`.env`, nunca commitado — ver
+  [Instalação e execução](#instalação-e-execução)).
+- **Ciclos de refinamento** (problema → alteração → resultado, requisito
+  4.10/critério 15): o projeto documenta dois, índice em
+  [docs/qa/ciclos-de-refinamento.md](docs/qa/ciclos-de-refinamento.md).

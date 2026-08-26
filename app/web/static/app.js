@@ -80,7 +80,7 @@
     if (dados.aguardando_aprovacao_humana) {
       textoBannerAprovacao.textContent =
         (dados.resposta_estruturada && dados.resposta_estruturada.aviso_aprovacao) ||
-        "Esta análise requer aprovação humana antes de qualquer ação externa.";
+        "Confirme para notificar a área fiscal responsável; nenhuma notificação é enviada automaticamente.";
       btnAprovar.disabled = false;
       resultadoAprovacao.textContent = "";
       bannerAprovacao.hidden = false;
@@ -172,7 +172,7 @@
     resultadoAprovacao.textContent = "Enviando...";
 
     try {
-      const resposta = await fetch("/api/aprovar", {
+      const resposta = await fetch("/api/confirmar-notificacao", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ session_id: sessionId }),

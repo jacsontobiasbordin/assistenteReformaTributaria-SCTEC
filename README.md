@@ -709,7 +709,8 @@ limitação de confirmação acima) já passaram por um ciclo formal de
 problema → alteração → resultado, documentado em
 [docs/qa/ciclos-de-refinamento.md](docs/qa/ciclos-de-refinamento.md).
 
-**Vídeo de demonstração:** [a adicionar na Etapa 15].
+**Vídeo de demonstração:** <https://youtu.be/-qUVHbvjdSU> (YouTube, não
+listado, até 12 minutos).
 
 ## Prompts, modelo e refinamento
 

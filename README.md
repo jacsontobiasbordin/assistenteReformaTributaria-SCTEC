@@ -724,9 +724,9 @@ listado, até 12 minutos).
   e padrões de resposta esperados), com o texto integral da constante,
   em [docs/prompts/system-prompt-agente.md](docs/prompts/system-prompt-agente.md).
 - **Índice completo dos prompts usados** no projeto (todas as etapas,
-  0 a 13, incluindo as duas etapas adicionais criadas dinamicamente
-  durante o desenvolvimento), com branch e issue de cada uma, em
-  [docs/prompts/README.md](docs/prompts/README.md).
+  0 a 16, incluindo as duas etapas adicionais — 9.1 e 12.1 — criadas
+  dinamicamente durante o desenvolvimento), com branch e issue de cada
+  uma, em [docs/prompts/README.md](docs/prompts/README.md).
 - **Configuração do modelo por variável de ambiente:** `app/config.py`
   e `app/llm/factory.py` (Etapas 2 e 4) não têm nenhuma credencial
   hardcoded — o provedor ativo (`LLM_PROVIDER`: `gemini`, `anthropic`

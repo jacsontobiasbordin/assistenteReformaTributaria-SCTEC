@@ -27,6 +27,7 @@ realmente registrado no card do GitHub Projects.
 | [13](13-prompts-modelo-refinamento.md) | Prompts, modelo e ciclos de refinamento | docs/prompts-refinamento | [#14](https://github.com/jacsontobiasbordin/assistenteReformaTributaria-SCTEC/issues/14) |
 | [14](14-readme-final.md) | README.md final completo | docs/readme-video | [#15](https://github.com/jacsontobiasbordin/assistenteReformaTributaria-SCTEC/issues/15) |
 | [15](15-video-demonstracao.md) | Vídeo de demonstração | docs/readme-video-link | [#16](https://github.com/jacsontobiasbordin/assistenteReformaTributaria-SCTEC/issues/16) |
+| [16](16-revisao-final.md) | Revisão final e entrega | chore/entrega-final | [#17](https://github.com/jacsontobiasbordin/assistenteReformaTributaria-SCTEC/issues/17) |
 
 ## Documentos relacionados
 

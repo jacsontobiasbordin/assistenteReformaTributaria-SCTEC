@@ -1,0 +1,95 @@
+lint-test-build	Testes (pytest)	﻿2026-08-24T23:41:24.8621604Z ##[group]Run pytest tests/ -v --cov=app --cov-report=term-missing
+lint-test-build	Testes (pytest)	2026-08-24T23:41:24.8622168Z [36;1mpytest tests/ -v --cov=app --cov-report=term-missing[0m
+lint-test-build	Testes (pytest)	2026-08-24T23:41:24.8660937Z shell: /usr/bin/bash -e {0}
+lint-test-build	Testes (pytest)	2026-08-24T23:41:24.8661672Z env:
+lint-test-build	Testes (pytest)	2026-08-24T23:41:24.8661966Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Testes (pytest)	2026-08-24T23:41:24.8662411Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.16/x64/lib/pkgconfig
+lint-test-build	Testes (pytest)	2026-08-24T23:41:24.8662830Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Testes (pytest)	2026-08-24T23:41:24.8663199Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Testes (pytest)	2026-08-24T23:41:24.8663577Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+lint-test-build	Testes (pytest)	2026-08-24T23:41:24.8663949Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.16/x64/lib
+lint-test-build	Testes (pytest)	2026-08-24T23:41:24.8664270Z ##[endgroup]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:26.7068728Z ============================= test session starts ==============================
+lint-test-build	Testes (pytest)	2026-08-24T23:41:26.7070163Z platform linux -- Python 3.11.16, pytest-9.1.1, pluggy-1.6.0 -- /opt/hostedtoolcache/Python/3.11.16/x64/bin/python
+lint-test-build	Testes (pytest)	2026-08-24T23:41:26.7072033Z cachedir: .pytest_cache
+lint-test-build	Testes (pytest)	2026-08-24T23:41:26.7072998Z rootdir: /home/runner/work/assistenteReformaTributaria-SCTEC/assistenteReformaTributaria-SCTEC
+lint-test-build	Testes (pytest)	2026-08-24T23:41:26.7074196Z plugins: anyio-4.14.2, cov-7.1.0, langsmith-0.11.1
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.6964895Z collecting ... collected 48 items
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.6965397Z 
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.7383624Z tests/test_agent_graph.py::test_grafo_identifica_cenario_consulta_local_e_gera_analise[Como devo cadastrar o NCM dos meus produtos?-cadastro_produtos] PASSED [  2%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.7717112Z tests/test_agent_graph.py::test_grafo_identifica_cenario_consulta_local_e_gera_analise[Preciso emitir uma NF-e com os novos campos-emissao_nota_fiscal] PASSED [  4%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.8068094Z tests/test_agent_graph.py::test_grafo_identifica_cenario_consulta_local_e_gera_analise[Como calcular o IBS e a CBS na venda?-calculo_impostos] PASSED [  6%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.8316992Z tests/test_agent_graph.py::test_grafo_com_pergunta_vazia_retorna_mensagem_de_validacao PASSED [  8%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.8578065Z tests/test_agent_graph.py::test_grafo_com_pergunta_fora_de_escopo PASSED [ 10%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.8592110Z tests/test_agent_graph.py::test_cenarios_suportados_cobrem_os_tres_definidos PASSED [ 12%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.8958081Z tests/test_agent_graph.py::test_gerar_analise_com_retry_ate_sucesso_na_segunda_tentativa PASSED [ 14%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.9330410Z tests/test_agent_graph.py::test_gerar_analise_falha_em_todas_tentativas_aciona_fallback PASSED [ 16%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.9656027Z tests/test_agent_graph.py::test_triagem_seguranca_detecta_padrao_suspeito PASSED [ 18%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.9689855Z tests/test_config.py::test_get_settings_carrega_provedor_gemini PASSED   [ 20%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.9719033Z tests/test_config.py::test_get_settings_e_cacheado PASSED                [ 22%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.9753518Z tests/test_config.py::test_provedor_ativo_sem_api_key_gera_erro_claro PASSED [ 25%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:27.9783852Z tests/test_config.py::test_provedor_invalido_gera_erro PASSED            [ 27%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:28.0225726Z tests/test_e2e_cenarios.py::test_e2e_fluxo_principal_pergunta_legitima_retorna_analise_completa PASSED [ 29%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:28.0412731Z tests/test_e2e_cenarios.py::test_e2e_cenario_de_risco_prompt_injection_bloqueia_via_api PASSED [ 31%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:28.0596041Z tests/test_e2e_cenarios.py::test_e2e_cenario_de_risco_com_acentuacao_correta_tambem_bloqueia_via_api PASSED [ 33%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:28.7851006Z tests/test_llm_factory.py::test_get_llm_retorna_chat_google_generative_ai PASSED [ 35%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:29.9423500Z tests/test_llm_factory.py::test_get_llm_retorna_chat_anthropic PASSED    [ 37%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.0918914Z tests/test_llm_factory.py::test_get_llm_retorna_chat_openai PASSED       [ 39%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.0953718Z tests/test_llm_factory.py::test_get_llm_com_provedor_invalido_levanta_erro PASSED [ 41%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.0974094Z tests/test_local_kb.py::test_consultar_cenario_valido_retorna_resposta_completa[cadastro_produtos] PASSED [ 43%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.0993206Z tests/test_local_kb.py::test_consultar_cenario_valido_retorna_resposta_completa[calculo_impostos] PASSED [ 45%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.1011694Z tests/test_local_kb.py::test_consultar_cenario_valido_retorna_resposta_completa[emissao_nota_fiscal] PASSED [ 47%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.1027840Z tests/test_local_kb.py::test_consulta_cenario_input_rejeita_valor_invalido PASSED [ 50%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.1046414Z tests/test_local_kb.py::test_carregar_base_lanca_erro_quando_arquivo_nao_existe PASSED [ 52%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.1064534Z tests/test_local_kb.py::test_listar_cenarios_disponiveis_retorna_os_tres_cenarios PASSED [ 54%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.1535023Z tests/test_memoria.py::test_segunda_pergunta_mesma_sessao_ve_historico_e_usa_como_contexto PASSED [ 56%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.1997839Z tests/test_memoria.py::test_sessoes_com_thread_id_diferentes_nao_compartilham_historico PASSED [ 58%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.2235386Z tests/test_memoria.py::test_pergunta_invalida_nao_gera_entrada_no_historico PASSED [ 60%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.2567575Z tests/test_observabilidade.py::test_execucao_completa_gera_logs_para_multiplos_nodes_com_mesmo_execution_id PASSED [ 62%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.2921332Z tests/test_observabilidade.py::test_execucao_completa_gera_auditoria_correlacionada_com_os_logs PASSED [ 64%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.4791374Z tests/test_observabilidade.py::test_registrar_auditoria_concorrente_nao_corrompe_o_arquivo PASSED [ 66%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.4830851Z tests/test_observabilidade.py::test_client_llm_e_instanciado_com_timeout_configurado PASSED [ 68%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.5140224Z tests/test_seguranca.py::test_cenario_adversarial_bloqueia_sem_chamar_llm PASSED [ 70%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.5479646Z tests/test_seguranca.py::test_portao_aprovacao_humana_para_calculo_impostos PASSED [ 72%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.5808941Z tests/test_seguranca.py::test_sem_aprovacao_necessaria_para_outros_cenarios PASSED [ 75%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.5827659Z tests/test_seguranca.py::test_triagem_seguranca_detecta_padrao_com_acentuacao_correta PASSED [ 77%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.5846160Z tests/test_seguranca.py::test_triagem_seguranca_detecta_instrucoes_acentuadas PASSED [ 79%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.5864620Z tests/test_seguranca.py::test_triagem_seguranca_detecta_espacos_extras_entre_palavras PASSED [ 81%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.5883089Z tests/test_seguranca.py::test_triagem_seguranca_detecta_injecao_em_ingles PASSED [ 83%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.5902497Z tests/test_seguranca.py::test_triagem_seguranca_detecta_prompt_de_sistema_em_ordem_invertida PASSED [ 85%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.6026721Z tests/test_web.py::test_raiz_serve_a_interface_web_estatica PASSED       [ 87%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.6077948Z tests/test_web.py::test_listar_cenarios_retorna_os_tres_cenarios_suportados PASSED [ 89%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.6271534Z tests/test_web.py::test_analisar_com_pergunta_valida_retorna_sessao_e_resposta_completa PASSED [ 91%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.6630790Z tests/test_web.py::test_segunda_pergunta_com_mesmo_session_id_reusa_memoria_da_sessao PASSED [ 93%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.6791736Z tests/test_web.py::test_analisar_com_pergunta_adversarial_bloqueia_sem_chamar_llm PASSED [ 95%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:32.6989482Z tests/test_web.py::test_analisar_calculo_impostos_exige_aprovacao_humana PASSED [ 97%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1199382Z tests/test_web.py::test_analisar_com_pergunta_vazia_retorna_alertas_preenchido PASSED [100%]
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1200182Z 
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1200448Z ================================ tests coverage ================================
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1201899Z _______________ coverage: platform linux, python 3.11.16-final-0 _______________
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1202469Z 
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1202712Z Name                                  Stmts   Miss  Cover   Missing
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1203383Z -------------------------------------------------------------------
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1225614Z app/__init__.py                           0      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1226712Z app/agent/__init__.py                     0      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1227270Z app/agent/graph.py                       57      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1227868Z app/agent/nodes.py                      106      8    92%   121, 160-165, 237-241, 246
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1228492Z app/agent/prompts.py                      1      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1229040Z app/agent/schemas.py                      7      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1229610Z app/agent/state.py                       14      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1230018Z app/config.py                            25      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1230365Z app/llm/__init__.py                       0      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1230731Z app/llm/factory.py                       14      1    93%   36
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1231289Z app/observability/__init__.py             0      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1231671Z app/observability/audit.py               14      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1232082Z app/observability/decorators.py          54      9    83%   60-89
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1232731Z app/observability/logging_config.py      20      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1233109Z app/tools/__init__.py                     0      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1233485Z app/tools/local_kb.py                    24      1    96%   41
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1233865Z app/tools/schemas.py                     17      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1234224Z app/web/__init__.py                       0      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1234592Z app/web/main.py                          30      3    90%   69-74
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1234968Z app/web/schemas.py                       10      0   100%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1235338Z -------------------------------------------------------------------
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1235704Z TOTAL                                   393     22    94%
+lint-test-build	Testes (pytest)	2026-08-24T23:41:33.1236070Z ============================== 48 passed in 6.10s ==============================

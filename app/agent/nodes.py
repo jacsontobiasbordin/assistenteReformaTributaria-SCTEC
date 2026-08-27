@@ -1,0 +1,327 @@
+"""Nodes do grafo do agente.
+
+Todos os nodes deste arquivo, até a Etapa 4, são 100% determinísticos
+(regras da aplicação, sem LLM). O único node agêntico de todo o projeto
+é gerar_analise (introduzido na Etapa 5), que usa o LLM apenas para
+sintetizar a resposta final a partir do contexto já recuperado — nunca
+para decidir roteamento, autonomia ou execução de ferramentas.
+"""
+
+from __future__ import annotations
+
+import json
+import unicodedata
+
+from langchain_core.messages import HumanMessage, SystemMessage
+from pydantic import ValidationError
+
+from app.agent.prompts import SYSTEM_PROMPT_ANALISE
+from app.agent.schemas import AnaliseEstruturada
+from app.agent.state import AgentState
+from app.llm.factory import get_llm
+from app.observability.decorators import observar
+from app.tools.local_kb import (
+    BaseLocalIndisponivelError,
+    CenarioNaoEncontradoError,
+    consultar_cenario,
+)
+from app.tools.schemas import ConsultaCenarioInput
+
+MAX_TENTATIVAS_GERACAO = 2
+
+# Deteccao 100% deterministica (sem LLM), refinada na Etapa 7 a partir da
+# versao simples da Etapa 5 (ver docs/qa/refinamento-seguranca.md) e
+# novamente na Etapa 10, apos code review com IA sobre o diff da Etapa 7
+# (ver docs/qa/code-review-etapa07-seguranca.md): a lista so cobria a
+# grafia sem acentos usada nos proprios padroes, entao a mesma frase em
+# portugues correto (com acentuacao normal) ou em ingles passava direto.
+# Esta lista pode continuar crescendo conforme novos padroes de tentativa
+# de manipulacao forem observados (ciclo de refinamento continuo).
+_PADROES_SUSPEITOS = [
+    # tentativas de sobrescrever as instrucoes do sistema
+    "ignore as instrucoes",
+    "esqueca as regras",
+    "desconsidere o que foi dito",
+    "voce agora e",
+    "novo system prompt",
+    "a partir de agora voce",
+    "ignore all previous instructions",
+    "ignore the above",
+    "you are now",
+    "disregard the above",
+    # tentativas de exfiltracao de informacao sensivel
+    "revele",
+    "mostre sua configuracao",
+    "qual e sua api key",
+    "system prompt",
+    "prompt de sistema",
+    "reveal your system prompt",
+    "api key",
+    "chave de api",
+    "token de acesso",
+    "suas instrucoes internas",
+    # marcadores comuns de injecao via delimitadores falsos
+    '"""system"""',
+    "[inst]",
+    "<system>",
+]
+
+
+def _normalizar_para_deteccao(texto: str) -> str:
+    """Remove acentos e colapsa espacos repetidos antes de comparar com
+    _PADROES_SUSPEITOS (que sao escritos em ASCII puro, sem acentuacao).
+
+    Sem isto, a mesma tentativa de injecao escrita em portugues com
+    acentuacao correta (ex.: "instruções", "você", "está") ou com espacos
+    extras entre as palavras evade a deteccao, mesmo contendo exatamente
+    o padrao suspeito em espirito.
+    """
+    sem_acentos = (
+        unicodedata.normalize("NFKD", texto).encode("ascii", "ignore").decode("ascii")
+    )
+    return " ".join(sem_acentos.lower().split())
+
+_PALAVRAS_CHAVE_POR_CENARIO = {
+    "cadastro_produtos": [
+        "cadastro",
+        "produto",
+        "ncm",
+        "classificacao tributaria",
+        "cclasstrib",
+    ],
+    "emissao_nota_fiscal": [
+        "nota fiscal",
+        "nf-e",
+        "nfe",
+        "nfc-e",
+        "emissao",
+        "danfe",
+    ],
+    "calculo_impostos": [
+        "calculo",
+        "imposto",
+        "ibs",
+        "cbs",
+        "tributo",
+        "aliquota",
+    ],
+}
+
+_TAMANHO_MAXIMO_PERGUNTA = 500
+
+
+@observar("validar_entrada")
+def validar_entrada(state: AgentState) -> dict:
+    pergunta = state["pergunta_usuario"].strip()
+    alertas = list(state.get("alertas", []))
+
+    if not pergunta:
+        alertas.append("Por favor, informe uma pergunta ou selecione um cenario.")
+    elif len(pergunta) > _TAMANHO_MAXIMO_PERGUNTA:
+        alertas.append(
+            "Sua pergunta e muito longa. Tente resumir em ate 500 caracteres."
+        )
+
+    return {"pergunta_usuario": pergunta, "alertas": alertas}
+
+
+@observar("identificar_cenario")
+def identificar_cenario(state: AgentState) -> dict:
+    pergunta = state["pergunta_usuario"].lower()
+
+    for cenario, palavras_chave in _PALAVRAS_CHAVE_POR_CENARIO.items():
+        if any(palavra in pergunta for palavra in palavras_chave):
+            return {"cenario_identificado": cenario}
+
+    return {"cenario_identificado": "fora_de_escopo"}
+
+
+@observar("triagem_seguranca")
+def triagem_seguranca(state: AgentState) -> dict:
+    # Deteccao 100% deterministica (sem LLM). Versao refinada na Etapa 7
+    # a partir da deteccao simples da Etapa 5, e na Etapa 10 com
+    # normalizacao de acentos/espacos — ver
+    # docs/qa/refinamento-seguranca.md e
+    # docs/qa/code-review-etapa07-seguranca.md para o ciclo de
+    # refinamento.
+    pergunta = _normalizar_para_deteccao(state["pergunta_usuario"])
+    risco_detectado = any(padrao in pergunta for padrao in _PADROES_SUSPEITOS)
+    return {"risco_detectado": risco_detectado}
+
+
+@observar("consultar_base_local")
+def consultar_base_local(state: AgentState) -> dict:
+    alertas = list(state.get("alertas", []))
+
+    try:
+        payload = ConsultaCenarioInput(cenario=state["cenario_identificado"])
+        resposta = consultar_cenario(payload)
+        return {"dados_base_local": resposta.model_dump(), "alertas": alertas}
+    except (ValidationError, CenarioNaoEncontradoError, BaseLocalIndisponivelError):
+        alertas.append(
+            "Nao foi possivel consultar a base local de conhecimento para "
+            "este cenario no momento."
+        )
+        return {"dados_base_local": None, "alertas": alertas}
+
+
+@observar("avaliar_seguranca")
+def avaliar_seguranca(state: AgentState) -> dict:
+    # Node de juncao (fan-in) entre consultar_base_local e
+    # triagem_seguranca. Nao altera o estado — existe apenas para a
+    # decisao de roteamento (bloquear vs. seguir para gerar_analise)
+    # feita no grafo.
+    return {}
+
+
+@observar("bloquear_acao_insegura")
+def bloquear_acao_insegura(state: AgentState) -> dict:
+    # Bloqueio 100% deterministico, executado ANTES de qualquer chamada
+    # ao LLM. Nunca chama get_llm() — garante, por regra da aplicacao (e
+    # nao por "boa vontade" do modelo), que nenhuma instrucao maliciosa
+    # seja seguida e que nenhuma informacao sensivel (system prompt, API
+    # key) possa ser revelada por este caminho.
+    alertas = list(state.get("alertas", []))
+    alertas.append("Tentativa de instrucao nao autorizada detectada e bloqueada.")
+
+    return {
+        "resposta_estruturada": {
+            "cenario_analisado": "Solicitacao nao processada por motivo de seguranca.",
+            "pontos_reforma_relacionados": [],
+            "impactos_tecnicos_erp": [],
+            "pontos_atencao": ["A pergunta continha uma instrucao que nao sera seguida."],
+            "checklist_tecnico": [],
+        },
+        "alertas": alertas,
+    }
+
+
+@observar("gerar_analise")
+def gerar_analise(state: AgentState) -> dict:
+    """Unico node agentico do projeto.
+
+    Usa o LLM (via `get_llm()`) apenas para sintetizar a resposta final a
+    partir do contexto ja recuperado por `consultar_base_local` — nunca
+    para decidir roteamento, autonomia ou execucao de ferramentas.
+    """
+    tentativas = state.get("tentativas_geracao", 0) + 1
+    alertas = list(state.get("alertas", []))
+
+    contexto = json.dumps(state.get("dados_base_local"), ensure_ascii=False, indent=2)
+
+    partes_mensagem = []
+    historico = state.get("historico") or []
+    if historico:
+        ultimas_entradas = json.dumps(historico[-2:], ensure_ascii=False, indent=2)
+        partes_mensagem.append(
+            f"Contexto de perguntas anteriores nesta sessao:\n{ultimas_entradas}"
+        )
+    partes_mensagem.append(f"Pergunta do usuario: {state['pergunta_usuario']}")
+    partes_mensagem.append(
+        f"Contexto recuperado da base local (dados_base_local):\n{contexto}"
+    )
+
+    mensagens = [
+        SystemMessage(SYSTEM_PROMPT_ANALISE),
+        HumanMessage("\n\n".join(partes_mensagem)),
+    ]
+
+    try:
+        llm = get_llm()
+        estruturado = llm.with_structured_output(AnaliseEstruturada)
+        resultado = estruturado.invoke(mensagens)
+        return {
+            "tentativas_geracao": tentativas,
+            "resposta_estruturada": resultado.model_dump(),
+        }
+    except Exception:  # noqa: BLE001 - falha de LLM (rede/timeout/formato) nao pode propagar
+        alertas.append(
+            "Nao foi possivel gerar a analise no momento. Tentando novamente..."
+        )
+        return {"tentativas_geracao": tentativas, "alertas": alertas}
+
+
+def _resposta_e_valida(resposta: dict | None) -> bool:
+    if not resposta:
+        return False
+
+    campos_obrigatorios = (
+        "cenario_analisado",
+        "pontos_reforma_relacionados",
+        "impactos_tecnicos_erp",
+        "pontos_atencao",
+        "checklist_tecnico",
+    )
+    return all(resposta.get(campo) for campo in campos_obrigatorios)
+
+
+@observar("validar_resposta")
+def validar_resposta(state: AgentState) -> dict:
+    # Node "passivo": nao altera o estado. Existe apenas para a decisao de
+    # roteamento (retry vs. sucesso vs. falha definitiva) feita no grafo.
+    return {}
+
+
+@observar("solicitar_aprovacao_humana")
+def solicitar_aprovacao_humana(state: AgentState) -> dict:
+    # Portao de aprovacao: roda apenas quando cenario_identificado ==
+    # "calculo_impostos" (regra deterministica da aplicacao — calculo de
+    # impostos e o cenario de maior risco financeiro/de compliance no
+    # dominio). Nao dispara nenhuma notificacao — isso so existe a partir
+    # da Etapa 12. Aqui apenas sinaliza que a acao esta pendente de
+    # aprovacao humana antes de qualquer notificacao externa.
+    resposta = dict(state.get("resposta_estruturada") or {})
+    resposta["aviso_aprovacao"] = (
+        "Esta analise envolve calculo de impostos. Confirme para "
+        "notificar a area fiscal responsavel; nenhuma notificacao e "
+        "enviada automaticamente."
+    )
+    return {"aguardando_aprovacao_humana": True, "resposta_estruturada": resposta}
+
+
+@observar("registrar_historico")
+def registrar_historico(state: AgentState) -> dict:
+    # So roda no caminho de sucesso (resposta valida): perguntas invalidas
+    # ou fora de escopo nao agregam contexto util para perguntas futuras
+    # na mesma sessao, entao nao valem a pena reter na memoria de curto
+    # prazo.
+    entrada = {
+        "pergunta": state["pergunta_usuario"],
+        "cenario": state["cenario_identificado"],
+        "resumo": state["resposta_estruturada"]["cenario_analisado"],
+    }
+    return {"historico": [entrada]}
+
+
+@observar("responder_erro_geracao")
+def responder_erro_geracao(state: AgentState) -> dict:
+    return {
+        "resposta_estruturada": {
+            "mensagem": (
+                "Nao foi possivel concluir a analise apos multiplas "
+                "tentativas. Tente novamente em instantes ou reformule a "
+                "pergunta."
+            )
+        },
+        "alertas": list(state.get("alertas", [])),
+    }
+
+
+@observar("responder_entrada_invalida")
+def responder_entrada_invalida(state: AgentState) -> dict:
+    mensagem = " ".join(state.get("alertas", []))
+    return {"resposta_estruturada": {"mensagem": mensagem}}
+
+
+@observar("responder_fora_de_escopo")
+def responder_fora_de_escopo(state: AgentState) -> dict:
+    return {
+        "resposta_estruturada": {
+            "mensagem": (
+                "Sua pergunta nao se encaixa em nenhum dos 3 cenarios "
+                "suportados (cadastro de produtos, emissao de nota fiscal "
+                "ou calculo de IBS/CBS). Tente reformular mencionando um "
+                "desses temas."
+            )
+        }
+    }

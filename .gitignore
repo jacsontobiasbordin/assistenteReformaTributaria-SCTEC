@@ -10,3 +10,6 @@ build/
 dist/
 *.egg-info/
 *.log
+.coverage
+.pytest_cache/
+.ruff_cache/

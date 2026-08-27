@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assistente para Reforma Tributária</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="pagina">
+    <header class="cabecalho">
+      <h1>Assistente para Reforma Tributária</h1>
+      <p class="descricao">
+        Apoio técnico para times de ERP identificarem rapidamente o que
+        revisar diante das mudanças da Reforma Tributária (IBS/CBS).
+        Descreva um cenário de cadastro de produtos, emissão de nota
+        fiscal ou cálculo de impostos.
+      </p>
+    </header>
+
+    <main>
+      <section class="cartao" aria-labelledby="titulo-pergunta">
+        <h2 id="titulo-pergunta">Sua pergunta</h2>
+
+        <div class="botoes-rapidos">
+          <button
+            type="button"
+            class="botao-rapido"
+            data-exemplo="Como devo cadastrar o NCM dos meus produtos?"
+          >
+            Cadastro de produtos
+          </button>
+          <button
+            type="button"
+            class="botao-rapido"
+            data-exemplo="Preciso emitir uma NF-e com os novos campos, o que muda?"
+          >
+            Emissão de nota fiscal
+          </button>
+          <button
+            type="button"
+            class="botao-rapido"
+            data-exemplo="Como calcular o IBS e a CBS na venda?"
+          >
+            Cálculo de IBS/CBS
+          </button>
+        </div>
+
+        <label for="pergunta" class="rotulo-visualmente-oculto">
+          Pergunta sobre a Reforma Tributária
+        </label>
+        <textarea
+          id="pergunta"
+          rows="4"
+          maxlength="1000"
+          placeholder="Ex.: Como devo cadastrar o NCM dos meus produtos?"
+        ></textarea>
+
+        <div class="acoes-pergunta">
+          <button type="button" id="btn-analisar" class="botao-primario">
+            Analisar impacto
+          </button>
+        </div>
+
+        <div id="progresso" class="progresso" hidden>
+          <span class="spinner" aria-hidden="true"></span>
+          <span>Analisando...</span>
+        </div>
+      </section>
+
+      <section
+        id="resultado-section"
+        class="resultado"
+        aria-labelledby="titulo-resultado"
+        hidden
+      >
+        <h2 id="titulo-resultado">Resultado da análise</h2>
+
+        <div id="banner-aprovacao" class="banner banner-aviso" hidden>
+          <strong>Confirmação necessária.</strong>
+          <span id="texto-banner-aprovacao"></span>
+          <div class="acoes-aprovacao">
+            <button type="button" id="btn-aprovar">Confirmar e notificar a área fiscal</button>
+            <span id="resultado-aprovacao"></span>
+          </div>
+        </div>
+
+        <div id="banner-alerta" class="banner banner-alerta" hidden>
+          <strong>Atenção:</strong>
+          <ul id="lista-banner-alerta"></ul>
+        </div>
+
+        <div id="blocos-analise">
+          <article class="cartao bloco-simples" id="bloco-mensagem" hidden>
+            <p id="texto-mensagem"></p>
+          </article>
+
+          <article class="cartao bloco" id="bloco-cenario" hidden>
+            <h3>Cenário analisado</h3>
+            <p id="texto-cenario"></p>
+          </article>
+
+          <article class="cartao bloco" id="bloco-pontos-reforma" hidden>
+            <h3>Pontos da reforma relacionados</h3>
+            <ul id="lista-pontos-reforma"></ul>
+          </article>
+
+          <article class="cartao bloco" id="bloco-impactos-erp" hidden>
+            <h3>Impactos técnicos no ERP</h3>
+            <ul id="lista-impactos-erp"></ul>
+          </article>
+
+          <article class="cartao bloco" id="bloco-pontos-atencao" hidden>
+            <h3>Pontos de atenção</h3>
+            <ul id="lista-pontos-atencao"></ul>
+          </article>
+
+          <article class="cartao bloco" id="bloco-checklist" hidden>
+            <h3>Checklist técnico</h3>
+            <ul id="lista-checklist"></ul>
+          </article>
+        </div>
+
+        <div class="acoes-resultado">
+          <button type="button" id="btn-copiar" disabled>
+            Copiar resposta
+          </button>
+          <button type="button" id="btn-baixar" disabled>
+            Baixar relatório
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="rodape">
+      <p>
+        Análise gerada por IA — apoio técnico inicial, não é parecer
+        jurídico/fiscal definitivo.
+      </p>
+    </footer>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

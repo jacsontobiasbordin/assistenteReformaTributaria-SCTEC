@@ -15,6 +15,7 @@ prompts registrados em `docs/prompts/`.
 | 7 | Segurança, governança e aprovação humana | Triagem de prompt injection, limites de autonomia, human-in-the-loop | feature/governanca |
 | 8 | Observabilidade e resiliência | Logs estruturados, trilha de auditoria, timeout/retry/fallback | feature/observabilidade |
 | 9 | Interface executável da aplicação (API) | Exposição do grafo via API local (FastAPI) | feature/interface |
+| 9.1 | Front-end web baseado no mockup do mini-projeto | Interface web estática (HTML/CSS/JS) consumindo a API da Etapa 9 — issue [#28](https://github.com/jacsontobiasbordin/assistenteReformaTributaria-SCTEC/issues/28), adicional ao plano original de 17 etapas | feature/frontend-web |
 | 10 | QA com IA: code review e teste gerado | Revisão de PR/diff real e geração/refino de teste com IA | feature/qa-inteligente |
 | 11 | DevOps inteligente: pipeline e análise de anomalia | Pipeline CI, explicação de logs, detecção de anomalia, risco | feature/devops-anomalias |
 | 12 | Automação low-code/no-code (n8n) | Fluxo n8n disparado por webhook após aprovação humana | feature/low-code |

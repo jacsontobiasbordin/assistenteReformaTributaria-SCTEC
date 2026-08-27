@@ -26,6 +26,7 @@ realmente registrado no card do GitHub Projects.
 | [12.1](12.1-refinamento-confirmacao.md) | Refinamento: confirmação em vez de aprovação de terceiro | fix/confirmacao-vs-aprovacao | [#33](https://github.com/jacsontobiasbordin/assistenteReformaTributaria-SCTEC/issues/33) |
 | [13](13-prompts-modelo-refinamento.md) | Prompts, modelo e ciclos de refinamento | docs/prompts-refinamento | [#14](https://github.com/jacsontobiasbordin/assistenteReformaTributaria-SCTEC/issues/14) |
 | [14](14-readme-final.md) | README.md final completo | docs/readme-video | [#15](https://github.com/jacsontobiasbordin/assistenteReformaTributaria-SCTEC/issues/15) |
+| [15](15-video-demonstracao.md) | Vídeo de demonstração | docs/readme-video-link | [#16](https://github.com/jacsontobiasbordin/assistenteReformaTributaria-SCTEC/issues/16) |
 
 ## Documentos relacionados
 
